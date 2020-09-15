@@ -13,6 +13,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ECommerceWebSite.Models.DbModels;
 using ECommerceWebSite.Data;
+using ECommerceWebSite.Middlewares;
 
 namespace ECommerceWebSite
 {
@@ -67,13 +68,19 @@ namespace ECommerceWebSite
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+
+
             if (env.IsDevelopment())
             {
+
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
             }
             else
             {
+                //Change Url Middleware for reverce proxy 
+                app.ChangeRequestUrl();
+
                 app.UseExceptionHandler("/Home/Error");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();

@@ -14,6 +14,7 @@ namespace ECommerceWebSite
     {
         public static void Main(string[] args)
         {
+            
             CreateHostBuilder(args).Build().Run();
         }
 
@@ -26,7 +27,7 @@ namespace ECommerceWebSite
                     webBuilder.UseKestrel(
                         options =>
                         {
-                            options.Listen(IPAddress.Parse("0.0.0.0"), 11000, x =>
+                            options.Listen(IPAddress.Parse("0.0.0.0"), 12000, x =>
                               {
                                   x.UseHttps();
                               });
