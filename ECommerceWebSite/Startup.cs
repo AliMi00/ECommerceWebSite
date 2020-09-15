@@ -14,6 +14,7 @@ using Microsoft.Extensions.Hosting;
 using ECommerceWebSite.Models.DbModels;
 using ECommerceWebSite.Data;
 using ECommerceWebSite.Middlewares;
+using ECommerceWebSite.Services;
 
 namespace ECommerceWebSite
 {
@@ -58,7 +59,12 @@ namespace ECommerceWebSite
                 options.Password.RequireUppercase = false;
             })
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+            //services 
             services.AddTransient<IApplicationDbContext, ApplicationDbContext>();
+            services.AddTransient<IProductServices, ProductServices>();
+            services.AddTransient<ICategoryServices, CategoryServices>();
+
+            
             services.AddControllersWithViews();
             services.AddRazorPages();
 

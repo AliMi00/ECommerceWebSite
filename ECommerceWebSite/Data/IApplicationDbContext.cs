@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ECommerceWebSite.Data
 {
-    interface IApplicationDbContext:IDisposable
+    public interface IApplicationDbContext:IDisposable
     {
         DbSet<Customer> Customers { get; set; }
         DbSet<Category> Categories { get; set; }
