@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ECommerceWebSite.Services
 {
-    interface ICategoryServices
+    public interface ICategoryServices
     {
         List<CategoryViewModel> GetCategories();
     }

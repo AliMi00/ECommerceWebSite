@@ -59,14 +59,17 @@ namespace ECommerceWebSite
                 options.Password.RequireUppercase = false;
             })
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+            services.AddControllersWithViews();
+            services.AddRazorPages();
             //services 
             services.AddTransient<IApplicationDbContext, ApplicationDbContext>();
             services.AddTransient<IProductServices, ProductServices>();
             services.AddTransient<ICategoryServices, CategoryServices>();
-
+            services.AddTransient<IOrderServices, OrderServices>();
+            services.AddTransient<ChangeRequestUrl>();
+            services.AddTransient<DatabaseGuard>();
+            services.AddMvc().AddRazorRuntimeCompilation();
             
-            services.AddControllersWithViews();
-            services.AddRazorPages();
 
 
         }
@@ -74,7 +77,8 @@ namespace ECommerceWebSite
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-
+            //Change Url Middleware for reverce proxy 
+            app.ChangeRequestUrl();
 
             if (env.IsDevelopment())
             {
@@ -84,9 +88,6 @@ namespace ECommerceWebSite
             }
             else
             {
-                //Change Url Middleware for reverce proxy 
-                app.ChangeRequestUrl();
-
                 app.UseExceptionHandler("/Home/Error");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();

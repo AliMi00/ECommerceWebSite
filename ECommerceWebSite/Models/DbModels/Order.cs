@@ -8,7 +8,7 @@ namespace ECommerceWebSite.Models.DbModels
         public int Id { get; set; }
         public DateTime OrderDate { get; set; }
         public int AmountBuy { get; set; }
-        public Customer User { get; set; }
+        public Customer Customer { get; set; }
         public OrderStatusTypes OrderStatus { get; set; }
 #nullable enable
         public string? Authority { get; set; }

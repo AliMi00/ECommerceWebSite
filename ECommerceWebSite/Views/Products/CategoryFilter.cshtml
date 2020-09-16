@@ -1,0 +1,75 @@
+﻿@model List<ECommerceWebSite.Models.ViewModels.ProductViewModel>
+    <script>
+    window.onload = QueryOrder;
+    function QueryOrder() {
+        var TotalPrice = 0;
+        $.ajax({
+            type: "GET",
+            url: "GetProductOfOpenOrder",
+            datatype: "json",
+            success: function (data) {
+                //alert(JSON.stringify(data));
+                TotalPrice = data.totalPrice;
+                document.getElementById("price").innerText = TotalPrice;
+            },
+            error: function (request, error) {
+                alert(JSON.stringify(request));
+                alert(JSON.stringify(error));
+                return;
+            }
+
+        });
+
+    }
+
+
+    function AddToCard(id) {
+        //TODO:
+        //Must handle cookie information
+        data = {
+            productId: id,
+        }
+
+        $.ajax({
+            data: data,
+            type: "GET",
+            url: "AddProductToOrder",
+            datatype: "json",
+            success: function (data) {
+                QueryOrder();
+            },
+            error: function (request, error) {
+                alert(JSON.stringify(request));
+                alert(JSON.stringify(error));
+            }
+
+        });
+
+
+
+
+    }
+    </script>
+
+    <div class="row text-center">
+        <div class="col-sm-12">
+            <h1>محصولات این دسته</h1>
+        </div>
+        @foreach (var item in Model)
+        {
+            <div class="col-sm-3 pb-2">
+                @*<a href="">*@
+                <img src="~/image/product/@(new Random(Guid.NewGuid().GetHashCode()).Next(1,8)).png" class="img-thumbnail w-100" />
+                @*</a>*@
+                <h2>@item.Title</h2>
+                <p class="form-group">قیمت محصول: @item.Price ریال</p>
+                <a asp-action="Detail" asp-route-CategoryId="@item.Id" class="btn btn-outline-success mb-2">مشخصات بیشتر...</a>
+                <button onclick="AddToCard(@item.Id)" class="btn btn-success">اضافه به سبد خرید</button>
+            </div>
+        }
+        <div class="col-sm-12">
+            <a asp-action="Index" asp-controller="Home" class="btn btn-outline-dark mb-2 mt-5">بازگشت به منوی دسته‌بندی‌ها</a>
+        </div>
+
+
+    </div>
