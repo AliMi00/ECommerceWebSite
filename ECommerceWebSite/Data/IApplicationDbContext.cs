@@ -16,6 +16,9 @@ namespace ECommerceWebSite.Data
         DbSet<Order> Orders { get; set; }
         DbSet<ProductCategory> ProductCategories { get; set; }
         DbSet<Product> Products { get; set; }
+        DbSet<CartItem> CartItems { get; set; }
+        DbSet<Tag> Tags { get; set; }
+
         void Dispose();
         ValueTask DisposeAsync();
         int SaveChanges();

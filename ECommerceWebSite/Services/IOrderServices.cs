@@ -18,5 +18,6 @@ namespace ECommerceWebSite.Services
         Product GetProduct(int productId);
         ProductAddResponseViewModel SaveOrder(string Username, int productId, int quantity = 1);
         int ValidateOrders();
+        bool PayForOrder(int amount, string userName);
     }
 }

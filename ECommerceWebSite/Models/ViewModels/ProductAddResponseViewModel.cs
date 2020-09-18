@@ -9,6 +9,5 @@ namespace ECommerceWebSite.Models.ViewModels
     {
         public string Message { get; set; }
         public bool Succeed { get; set; }
-        public int orderId { get; set; }
     }
 }

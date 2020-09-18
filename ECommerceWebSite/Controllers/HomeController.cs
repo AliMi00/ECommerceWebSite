@@ -10,6 +10,7 @@ using ECommerceWebSite.Data;
 using ECommerceWebSite.Services;
 using ECommerceWebSite.Models.ViewModels;
 using ECommerceWebSite.Models.DbModels;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ECommerceWebSite.Controllers
 {
@@ -27,7 +28,6 @@ namespace ECommerceWebSite.Controllers
             this.db = db;
             this.categoryServices = categoryServices;
         }
-
         public IActionResult Index()
         {
             var model = new IndexViewModel()
@@ -37,7 +37,7 @@ namespace ECommerceWebSite.Controllers
             };
             return View(model);
         }
-
+        [Authorize]
         public IActionResult Privacy()
         {
             return View();
@@ -48,7 +48,8 @@ namespace ECommerceWebSite.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
-
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
         public IActionResult seeddb(string secret)
         {
             if (secret == "ali")

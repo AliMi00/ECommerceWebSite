@@ -14,6 +14,12 @@ namespace ECommerceWebSite.Services
         {
             db = _db;
         }
+        /// <summary>
+        /// get all the available products by category filter
+        /// </summary>
+        /// <param name="categoryId"></param>
+        /// <param name="deleted"></param>
+        /// <returns></returns>
         public List<ProductViewModel> GetProducts(int categoryId, bool deleted = false)
         {
             return db.Products
@@ -35,6 +41,7 @@ namespace ECommerceWebSite.Services
                     Price = x.Price
                 }).ToList();
         }
+
         public List<ProductViewModel> GetProducts(string categoryName, bool deleted)
         {
             return GetProducts(GetCategoryId(categoryName));

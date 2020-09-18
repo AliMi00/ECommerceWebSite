@@ -17,8 +17,9 @@ namespace ECommerceWebSite.Models.DbModels
         public DateTime CreationDate { get; set; }
         public DateTime? DisableDate { get; set; }
         public DateTime? RemoveDate { get; set; }
-        [MaxLength(100)]
         public string PictureAddress { get; set; }
         public ICollection<ProductCategory> ProductCategories { get; set; }
+        public ICollection<Tag> ProductTags { get; set; }
+
     }
 }

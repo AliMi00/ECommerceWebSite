@@ -21,6 +21,9 @@ namespace ECommerceWebSite.Data
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<ProductCategory> ProductCategories { get; set; }
+        public DbSet<CartItem> CartItems { get; set; }
+        public DbSet<Tag> Tags { get; set; }
+
 
         public override int SaveChanges()
         {

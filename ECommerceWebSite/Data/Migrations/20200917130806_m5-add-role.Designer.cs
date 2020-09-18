@@ -4,57 +4,22 @@ using ECommerceWebSite.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ECommerceWebSite.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200917130806_m5-add-role")]
+    partial class m5addrole
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "3.1.6")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-            modelBuilder.Entity("ECommerceWebSite.Models.DbModels.CartItem", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime>("AddedTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("CustomerId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime?>("DeletedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("OrderedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int?>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("RemoveDate")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CustomerId");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("CartItems");
-                });
 
             modelBuilder.Entity("ECommerceWebSite.Models.DbModels.Category", b =>
                 {
@@ -132,6 +97,7 @@ namespace ECommerceWebSite.Data.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("PostCode")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SecurityStamp")
@@ -243,7 +209,8 @@ namespace ECommerceWebSite.Data.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("PictureAddress")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(100)")
+                        .HasMaxLength(100);
 
                     b.Property<int>("Price")
                         .HasColumnType("int");
@@ -290,26 +257,6 @@ namespace ECommerceWebSite.Data.Migrations
                     b.HasIndex("ProdctId");
 
                     b.ToTable("ProductCategories");
-                });
-
-            modelBuilder.Entity("ECommerceWebSite.Models.DbModels.Tag", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int?>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("tag")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("Tags");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -447,17 +394,6 @@ namespace ECommerceWebSite.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("ECommerceWebSite.Models.DbModels.CartItem", b =>
-                {
-                    b.HasOne("ECommerceWebSite.Models.DbModels.Customer", "Customer")
-                        .WithMany()
-                        .HasForeignKey("CustomerId");
-
-                    b.HasOne("ECommerceWebSite.Models.DbModels.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductId");
-                });
-
             modelBuilder.Entity("ECommerceWebSite.Models.DbModels.Order", b =>
                 {
                     b.HasOne("ECommerceWebSite.Models.DbModels.Customer", "Customer")
@@ -489,13 +425,6 @@ namespace ECommerceWebSite.Data.Migrations
                         .HasForeignKey("ProdctId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("ECommerceWebSite.Models.DbModels.Tag", b =>
-                {
-                    b.HasOne("ECommerceWebSite.Models.DbModels.Product", "Product")
-                        .WithMany("ProductTags")
-                        .HasForeignKey("ProductId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

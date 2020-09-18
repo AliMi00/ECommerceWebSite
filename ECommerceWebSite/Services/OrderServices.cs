@@ -70,7 +70,6 @@ namespace ECommerceWebSite.Services
 
             responseModel.Message = "Product added to order";
             responseModel.Succeed = true;
-            responseModel.orderId = order.Id;
 
             return responseModel;
 
@@ -139,9 +138,6 @@ namespace ECommerceWebSite.Services
             return responseModel;
 
         }
-
-
-
         //this will be use in hosted service to validate orders
         public int ValidateOrders()
         {

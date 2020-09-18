@@ -4,14 +4,16 @@ using ECommerceWebSite.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ECommerceWebSite.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200918081134_m7-change-cart-tags")]
+    partial class m7changecarttags
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -494,7 +496,7 @@ namespace ECommerceWebSite.Data.Migrations
             modelBuilder.Entity("ECommerceWebSite.Models.DbModels.Tag", b =>
                 {
                     b.HasOne("ECommerceWebSite.Models.DbModels.Product", "Product")
-                        .WithMany("ProductTags")
+                        .WithMany()
                         .HasForeignKey("ProductId");
                 });
 

@@ -5,11 +5,11 @@
         var TotalPrice = 0;
         $.ajax({
             type: "GET",
-            url: "GetProductOfOpenOrder",
+            url: "GetProductOfOpenCart",
             datatype: "json",
             success: function (data) {
                 //alert(JSON.stringify(data));
-                TotalPrice = data.totalPrice;
+                TotalPrice = data.TotalPrice;
                 document.getElementById("price").innerText = TotalPrice;
             },
             error: function (request, error) {
@@ -33,7 +33,7 @@
         $.ajax({
             data: data,
             type: "GET",
-            url: "AddProductToOrder",
+            url: "AddProductToCart",
             datatype: "json",
             success: function (data) {
                 QueryOrder();
