@@ -25,6 +25,7 @@ namespace ECommerceWebSite.Services
             return db.Products
                 .Where(p => !p.RemoveDate.HasValue &&
                             !p.DisableDate.HasValue &&
+                            p.Quantity > 0 &&
                             p.ProductCategories
                             .Any(pc =>
                                  pc.Cateory.Id == categoryId &&
