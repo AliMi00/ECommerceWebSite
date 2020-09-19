@@ -1,0 +1,62 @@
+﻿@model ECommerceWebSite.Models.ViewModels.CartListViewModel
+@{
+    ViewData["Title"] = "Cart";
+}
+@if (Model.CartItems.Count > 0)
+{
+    <h1>سبد خرید شما  </h1>
+}
+@if (Model.CartItems.Count <= 0)
+{
+    <h1>سبد خرید خالی است</h1>
+}
+
+
+<table class="table table-striped">
+    <tr>
+        <th>
+            <label asp-for="CartItems.FirstOrDefault().Title" class="control-label"></label>
+        </th>
+        <th>
+            <label asp-for="CartItems.FirstOrDefault().Price" class="control-label"></label>
+        </th>
+    </tr>
+
+    @foreach (var item in Model.CartItems)
+    {
+        <tr>
+            <td>
+                <img alt="picture" class="img-thumbnail" src="@item.ImageAddress"/>
+            </td>
+            <td>
+                <label class="control-label">@item.Title</label>
+            </td>
+            <td>
+                <label class="control-label">@item.Price</label>
+            </td>
+            <td>
+                <label class="control-label">@item.Quantity</label>
+            </td>
+
+
+        </tr>
+    }
+
+    <tr>
+        <td>
+            <label asp-for="TotalPrice" class="control-label"></label>
+        </td>
+        <td>
+            <label class="control-label">@Model.TotalPrice</label>
+        </td>
+    </tr>
+
+</table>
+@if (Model.CartItems.Count > 0)
+{
+    <a asp-controller="Orders" asp-action="CheckOut" class="btn btn-success">پرداخت</a>
+}
+@if (Model.CartItems.Count <= 0)
+{
+    <button class="btn btn-light" disabled>پرداخت</button>
+}

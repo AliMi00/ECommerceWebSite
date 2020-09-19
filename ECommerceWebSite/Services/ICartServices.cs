@@ -10,7 +10,7 @@ namespace ECommerceWebSite.Services
     public interface ICartServices
     {
         ProductAddResponseViewModel addToCart(string Username, int productId, int quantity = 1);
-        CartListViewModel GetCartList(string userName);
+        List<CartItem> GetCartList(string userName);
         Customer GetCustomer(string Username);
         Product GetProduct(int productId);
 

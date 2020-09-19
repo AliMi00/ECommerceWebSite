@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using ECommerceWebSite.Models.DbModels;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using ECommerceWebSite.Models.ViewModels;
 
 namespace ECommerceWebSite.Data
 {

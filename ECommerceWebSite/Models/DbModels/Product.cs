@@ -20,6 +20,8 @@ namespace ECommerceWebSite.Models.DbModels
         public string PictureAddress { get; set; }
         public ICollection<ProductCategory> ProductCategories { get; set; }
         public ICollection<Tag> ProductTags { get; set; }
+        public int Quantity { get; set; }
+
 
     }
 }

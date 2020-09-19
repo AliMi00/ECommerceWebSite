@@ -1,54 +1,37 @@
-﻿@model ECommerceWebSite.Models.ViewModels.OrderViewModel
+﻿@model List<ECommerceWebSite.Models.ViewModels.ShowOrderViewModel>
 @{
     ViewData["Title"] = "ShowOrder";
 }
-@if (Model.Id > 0)
-{
-    <h1>فاکتور شماره @Model.Id</h1>
-}
-@if (Model.Id <= 0)
-{
-    <h1>سبد خرید خالی است</h1>
-}
+
 
 
 <table class="table table-striped">
     <tr>
         <th>
-            <label asp-for="Details.FirstOrDefault().Title" class="control-label"></label>
+            <label asp-for="First().Id" class="control-label"></label>
         </th>
         <th>
-            <label asp-for="Details.FirstOrDefault().Price" class="control-label"></label>
+            <label asp-for="First().TotalPrice" class="control-label"></label>
+        </th>
+        <th>
+            <label asp-for="First().OrderDate" class="control-label"></label>
         </th>
     </tr>
 
-    @foreach (var item in Model.Details)
+    @foreach (var item in Model)
     {
         <tr>
             <td>
-                <label class="control-label">@item.Title</label>
+                <label class="control-label">@item.Id</label>
             </td>
             <td>
-                <label class="control-label">@item.Price</label>
+                <label class="control-label">@item.TotalPrice</label>
+            </td>
+            <td>
+                <label class="control-label">@item.OrderDate</label>
             </td>
         </tr>
     }
 
-    <tr>
-        <td>
-            <label asp-for="TotalPrice" class="control-label"></label>
-        </td>
-        <td>
-            <label class="control-label">@Model.TotalPrice</label>
-        </td>
-    </tr>
 
 </table>
-@if (Model.Id > 0)
-{
-    <a asp-action="CheckOut" class="btn btn-success">پرداخت</a>
-}
-@if (Model.Id <= 0)
-{
-    <button class="btn btn-light" disabled>پرداخت</button>
-}

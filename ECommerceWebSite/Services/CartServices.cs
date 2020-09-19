@@ -1,6 +1,7 @@
 ﻿using ECommerceWebSite.Data;
 using ECommerceWebSite.Models.DbModels;
 using ECommerceWebSite.Models.ViewModels;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -45,7 +46,15 @@ namespace ECommerceWebSite.Services
                 Customer = customer,
                 Quantity = quantity,
             };
-            db.CartItems.Add(cart);
+            if(!db.CartItems.Any(c => c.Customer.Id == customer.Id && c.Product.Id == product.Id && !c.RemoveDate.HasValue && !c.DeletedDate.HasValue))
+            {
+                db.CartItems.Add(cart);
+            }
+            else
+            {
+                db.CartItems.Where(c => c.Customer.Id == customer.Id && c.Product.Id == product.Id && !c.RemoveDate.HasValue && !c.DeletedDate.HasValue)
+                            .FirstOrDefault().Quantity += quantity;
+            }
             db.SaveChanges();
 
 
@@ -60,36 +69,25 @@ namespace ECommerceWebSite.Services
         /// </summary>
         /// <param name="userName"></param>
         /// <returns></returns>
-        public CartListViewModel GetCartList(string userName)
+        public List<CartItem> GetCartList(string userName)
         {
-            CartListViewModel respon = new CartListViewModel();
+            List<CartItem> cartItems;
             Customer customer = this.GetCustomer(userName);
-            if(customer == null)
+            if (customer == null)
             {
-                respon = new CartListViewModel()
-                {
-                    CartItems = new List<CartViewModel>(),
-                    TotalPrice = 0
-                };
-                return respon;
+                return cartItems =new List<CartItem>();
             }
-            respon.CartItems = 
-                db.CartItems.Where(c => c.Customer == customer &&
-                                        !c.DeletedDate.HasValue &&
-                                        !c.RemoveDate.HasValue &&
-                                        !c.Product.DisableDate.HasValue &&
-                                        !c.Product.RemoveDate.HasValue )
-                             .Select(x => new CartViewModel()
-                             {
-                                 Id = x.Id,
-                                 ImageAddress = x.Product.PictureAddress,
-                                 Price = x.Product.Price,
-                                 Quantity = x.Quantity,
-                                 Title = x.Product.Title
-                             }).ToList();
-            respon.TotalPrice = respon.CartItems.Sum(x => x.Price * x.Quantity);
+            else
+            {
+                cartItems =db.CartItems.Where(c => c.Customer == customer &&
+                            !c.DeletedDate.HasValue &&
+                            !c.RemoveDate.HasValue &&
+                            !c.Product.DisableDate.HasValue &&
+                            !c.Product.RemoveDate.HasValue).Include(x => x.Product).ToList();
 
-            return respon;
+                return cartItems;
+            }
+
         }
 
 

@@ -16,8 +16,9 @@ namespace ECommerceWebSite.Services
         Order GetOrder(string username, int? orderId = null, OrderStatusTypes? status = OrderStatusTypes.Open, bool withIncludes = false);
         OrderViewModel GetOrderDetails(int OrderId, string Username);
         Product GetProduct(int productId);
-        ProductAddResponseViewModel SaveOrder(string Username, int productId, int quantity = 1);
+        ProductAddResponseViewModel AddCartToOrder(string Username, int productId, int quantity = 1);
         int ValidateOrders();
         bool PayForOrder(int amount, string userName);
+        public int AddProductToCart(string UserName);
     }
 }

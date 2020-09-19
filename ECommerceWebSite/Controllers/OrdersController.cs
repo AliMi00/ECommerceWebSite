@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using ECommerceWebSite.Models;
+using ECommerceWebSite.Models.DbModels;
 using ECommerceWebSite.Models.ViewModels;
 using ECommerceWebSite.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -42,29 +43,41 @@ namespace ECommerceWebSite.Controllers
             return Json(order);
         }
 
-
+        //complited
         public IActionResult ShowOrders()
         {
-            var order = orderServices.GetOrder(UserName);
-            OrderViewModel viewModel;
+            var order = orderServices.CustomerOrders(UserName,null,OrderStatusTypes.Sent,false); 
+            
+            List<ShowOrderViewModel> viewModel;
             if(order != null)
             {
-                viewModel = orderServices.GetOrderDetails(order.Id, UserName);
+                viewModel = order.Select(x => new ShowOrderViewModel()
+                {
+                    Id = x.Id,
+                    TotalPrice = x.AmountBuy,
+                    OrderDate = x.PaymentDate
+
+                }).ToList();
             }
             else
             {
-                viewModel = new OrderViewModel()
-                {
-                    Details = new List<OrderDetailViewModel>(),
-                    TotalPrice = 0
-
-
-                };
+                viewModel = new List<ShowOrderViewModel>();
             }
             return View(viewModel);
         }
+
+        public IActionResult AddToOrder()
+        {
+            orderServices.AddProductToCart(UserName);
+
+            return View();
+        }
+
+        //
         public async Task<IActionResult> CheckOut()
         {
+            
+            
 
             var totalPrice = orderServices.GetOrder(UserName)?.AmountBuy;
 
