@@ -19,9 +19,9 @@ namespace ECommerceWebSite.Services
             this.cartServices = cartServices;
         }
 
-        public ProductAddResponseViewModel AddCartToOrder(string Username, int productId, int quantity = 1)
+        public ProductAddToOrderViewModel AddCartToOrder(string Username, int productId, int quantity = 1)
         {
-            var responseModel = new ProductAddResponseViewModel();
+            var responseModel = new ProductAddToOrderViewModel();
 
             var customer = this.GetCustomer(Username);
             var product = this.GetProduct(productId);
@@ -42,7 +42,7 @@ namespace ECommerceWebSite.Services
 
                 return responseModel;
             }
-            if(product.Quantity >= quantity)
+            if(product.Quantity <= quantity)
             {
                 responseModel.Message = "Product is not available";
                 responseModel.Succeed = false;
@@ -72,14 +72,15 @@ namespace ECommerceWebSite.Services
                 Quantity = quantity,
                 CreationDate = DateTime.Now
             };
-            if(db.OrderDetails.Any(x=> x.Order.Id == order.Id && x.Product.Id == product.Id && !x.DeleteDate.HasValue))
+            if(db.OrderDetails.Any(x=> x.Order.Id == order.Id && x.Product.Id == product.Id ))
             {
-                db.OrderDetails.Where(x => x.Order.Id == order.Id && x.Product.Id == product.Id).FirstOrDefault().DeleteDate = DateTime.Now;
-                int deletedQuantity = db.OrderDetails.Where(x => x.Order.Id == order.Id && x.Product.Id == product.Id).FirstOrDefault().Quantity;
+                int deletedQuantity = db.OrderDetails.Where(x => x.Order.Id == order.Id && x.Product.Id == product.Id && !x.DeleteDate.HasValue).FirstOrDefault().Quantity;
+                db.OrderDetails.Where(x => x.Order.Id == order.Id && x.Product.Id == product.Id && !x.DeleteDate.HasValue).FirstOrDefault().DeleteDate = DateTime.Now;
                 db.Products.Where(x => x.Id == product.Id).FirstOrDefault().Quantity += deletedQuantity;
             }
             db.OrderDetails.Add(orderDetail);
             db.Products.Where(x => x.Id == product.Id).FirstOrDefault().Quantity -= quantity;
+
             order.AmountBuy += orderDetail.UnitPriceBuy * orderDetail.Quantity;
             db.SaveChanges();
 
@@ -287,13 +288,16 @@ namespace ECommerceWebSite.Services
             if (customer == null)
                 return 0;
             List<CartItem> cartItems = cartServices.GetCartList(customer.UserName);
-            List<ProductAddResponseViewModel> respose = new List<ProductAddResponseViewModel>();
+            List<ProductAddToOrderViewModel> respose = new List<ProductAddToOrderViewModel>();
             foreach(CartItem item in cartItems)
             {
-                respose.Add( AddCartToOrder(item.Customer.UserName, item.Product.Id, item.Quantity));
+                ProductAddToOrderViewModel res = AddCartToOrder(item.Customer.UserName, item.Product.Id, item.Quantity);
+                db.CartItems.Where(x => x.Id == item.Id).SingleOrDefault().RemoveDate = DateTime.Now;
+
+                respose.Add(res);
             }
 
-
+            db.SaveChanges();
             return respose.Count(x => x.Succeed);
         }
 

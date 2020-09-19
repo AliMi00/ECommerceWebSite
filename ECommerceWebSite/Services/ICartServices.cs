@@ -9,7 +9,7 @@ namespace ECommerceWebSite.Services
 {
     public interface ICartServices
     {
-        ProductAddResponseViewModel addToCart(string Username, int productId, int quantity = 1);
+        ProductAddToOrderViewModel addToCart(string Username, int productId, int quantity = 1);
         List<CartItem> GetCartList(string userName);
         Customer GetCustomer(string Username);
         Product GetProduct(int productId);

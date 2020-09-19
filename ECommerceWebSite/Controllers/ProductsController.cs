@@ -39,7 +39,7 @@ namespace ECommerceWebSite.Controllers
         [Produces("application/json")]
         public IActionResult AddProductToCart(int productId, int quantity = 1)
         {
-            ProductAddResponseViewModel result = cartServices.addToCart(UserName, productId, quantity);
+            ProductAddToOrderViewModel result = cartServices.addToCart(UserName, productId, quantity);
             return Json(result);
         }
 

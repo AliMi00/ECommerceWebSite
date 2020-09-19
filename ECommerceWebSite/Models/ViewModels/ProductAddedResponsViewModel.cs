@@ -5,9 +5,10 @@ using System.Threading.Tasks;
 
 namespace ECommerceWebSite.Models.ViewModels
 {
-    public class ProductAddResponseViewModel
+    public class ProductAddedResponsViewModel
     {
         public string Message { get; set; }
-        public bool Succeed { get; set; }
+        public int ProductAddedCount { get; set; }
+
     }
 }

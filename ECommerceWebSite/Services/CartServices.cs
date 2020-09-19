@@ -18,9 +18,9 @@ namespace ECommerceWebSite.Services
         }
 
 
-        public ProductAddResponseViewModel addToCart(string Username, int productId, int quantity = 1)
+        public ProductAddToOrderViewModel addToCart(string Username, int productId, int quantity = 1)
         {
-            ProductAddResponseViewModel respons = new ProductAddResponseViewModel();
+            ProductAddToOrderViewModel respons = new ProductAddToOrderViewModel();
             var customer = this.GetCustomer(Username);
             var product = this.GetProduct(productId);
             if (customer == null)

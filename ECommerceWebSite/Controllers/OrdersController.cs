@@ -68,9 +68,26 @@ namespace ECommerceWebSite.Controllers
 
         public IActionResult AddToOrder()
         {
-            orderServices.AddProductToCart(UserName);
+            int count = orderServices.AddProductToCart(UserName);
 
-            return View();
+            var order = orderServices.GetOrder(UserName);
+
+            OrderViewModel model;
+            if (order != null)
+            {
+                model = orderServices.GetOrderDetails(order.Id, UserName);
+            }
+            else
+            {
+                model = new OrderViewModel()
+                {
+                    Details = new List<OrderDetailViewModel>(),
+                    TotalPrice = 0
+                };
+            }
+            
+
+            return View(model);
         }
 
         //

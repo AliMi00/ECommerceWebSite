@@ -54,9 +54,9 @@
 </table>
 @if (Model.CartItems.Count > 0)
 {
-    <a asp-controller="Orders" asp-action="CheckOut" class="btn btn-success">پرداخت</a>
+    <a asp-controller="Orders" asp-action="AddToOrder" class="btn btn-success">خرید خود را نهایی کنید </a>
 }
 @if (Model.CartItems.Count <= 0)
 {
-    <button class="btn btn-light" disabled>پرداخت</button>
+    <button class="btn btn-light" disabled>خرید خود را نهایی کنید  </button>
 }
