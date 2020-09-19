@@ -39,6 +39,13 @@ namespace ECommerceWebSite.Controllers
         [Produces("application/json")]
         public IActionResult AddProductToCart(int productId, int quantity = 1)
         {
+            if(UserName == null)
+            {
+                //
+                //TODO 
+                //
+                //here the code for managing the un athorize customer to store cart in temp table with uniqe id and store the id in user cookie to retrive the data 
+            }
             ProductAddToOrderViewModel result = cartServices.addToCart(UserName, productId, quantity);
             return Json(result);
         }
@@ -46,37 +53,7 @@ namespace ECommerceWebSite.Controllers
         [Produces("application/json")]
         public IActionResult GetProductOfOpenCart()
         {
-            //CartListViewModel respon = new CartListViewModel();
-            //Customer customer = this.GetCustomer(userName);
-            //if (customer == null)
-            //{
-            //    respon = new CartListViewModel()
-            //    {
-            //        CartItems = new List<CartViewModel>(),
-            //        TotalPrice = 0
-            //    };
-            //    return respon;
-            //}
-            //respon.CartItems =
-            //    db.CartItems.Where(c => c.Customer == customer &&
-            //                            !c.DeletedDate.HasValue &&
-            //                            !c.RemoveDate.HasValue &&
-            //                            !c.Product.DisableDate.HasValue &&
-            //                            !c.Product.RemoveDate.HasValue)
-            //                 .Select(x => new CartViewModel()
-            //                 {
-            //                     Id = x.Id,
-            //                     ImageAddress = x.Product.PictureAddress,
-            //                     Price = x.Product.Price,
-            //                     Quantity = x.Quantity,
-            //                     Title = x.Product.Title
-            //                 }).ToList();
-            //respon.TotalPrice = respon.CartItems.Sum(x => x.Price * x.Quantity);
-
-            //return respon;
-
-
-
+          
             var cart = cartServices.GetCartList(UserName);
             CartListViewModel result =new CartListViewModel();
             if (cart != null)
@@ -96,16 +73,6 @@ namespace ECommerceWebSite.Controllers
                             Title = x.Product.Title
                         }).ToList();
                 result.TotalPrice = result.CartItems.Sum(x => x.Price * x.Quantity);
-
-                //result.CartItems = cart.Select(x => new CartViewModel() 
-                //{
-                //    Id = x.Id,
-                //    ImageAddress = x.Product.PictureAddress,
-                //    Price =x.Product.Price,
-                //    Quantity = x.Quantity,
-                //    Title = x.Product.Title
-                //}).ToList();
-                //result.TotalPrice = cart.Sum(x => x.Product.Price * x.Quantity);
                 
             }
             else

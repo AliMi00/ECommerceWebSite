@@ -9,7 +9,8 @@
             datatype: "json",
             success: function (data) {
                 //alert(JSON.stringify(data));
-                TotalPrice = data.TotalPrice;
+                console.log(data);
+                TotalPrice = data.totalPrice;
                 document.getElementById("price").innerText = TotalPrice;
             },
             error: function (request, error) {
