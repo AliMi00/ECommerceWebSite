@@ -96,7 +96,7 @@ namespace ECommerceWebSite.Controllers
 
                     ProductCategory productCategory = new ProductCategory()
                     {
-                        Prodct = prod,
+                        Product = prod,
                         CreationDate = DateTime.Now,
                         Cateory = categories[new Random().Next(0, 3)],
 

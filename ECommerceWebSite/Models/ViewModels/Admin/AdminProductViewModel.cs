@@ -1,10 +1,14 @@
-﻿using System;
+﻿using ECommerceWebSite.Models.DbModels;
+using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace ECommerceWebSite.Models.DbModels
+namespace ECommerceWebSite.Models.ViewModels.Admin
 {
-    public class Product
+    public class AdminProductViewModel
     {
         public int Id { get; set; }
         [MaxLength(30)]
@@ -17,11 +21,9 @@ namespace ECommerceWebSite.Models.DbModels
         public DateTime CreationDate { get; set; }
         public DateTime? DisableDate { get; set; }
         public DateTime? RemoveDate { get; set; }
-        public string PictureAddress { get; set; }
+        public IFormFile Picture { get; set; }
         public ICollection<ProductCategory> ProductCategories { get; set; }
         public ICollection<Tag> ProductTags { get; set; }
         public int Quantity { get; set; }
-
-
     }
 }

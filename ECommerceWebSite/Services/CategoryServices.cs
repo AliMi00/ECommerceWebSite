@@ -26,8 +26,8 @@ namespace ECommerceWebSite.Services
                     Title = x.Title,
                     ProductCount = x.ProductCategories.Count(c => !c.DisableDate.HasValue &&
                                                                   !c.RemoveDate.HasValue &&
-                                                                  !c.Prodct.DisableDate.HasValue &&
-                                                                  !c.Prodct.RemoveDate.HasValue)
+                                                                  !c.Product.DisableDate.HasValue &&
+                                                                  !c.Product.RemoveDate.HasValue)
                 }).ToList();
         }
 
