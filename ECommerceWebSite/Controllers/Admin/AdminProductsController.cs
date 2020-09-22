@@ -10,41 +10,37 @@ using ECommerceWebSite.Models.DbModels;
 using Microsoft.AspNetCore.Http;
 using ECommerceWebSite.Models.ViewModels.Admin;
 using Microsoft.AspNetCore.Authorization;
+using ECommerceWebSite.Services;
 
 namespace ECommerceWebSite.Controllers.Admin
 {
     [Authorize(Roles ="Admin")]
-    [Route("Admin/[controller]/[action]")]
     public class AdminProductsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IAdminServices adminServices;
 
-        public AdminProductsController(ApplicationDbContext context)
+        public AdminProductsController(ApplicationDbContext context,IAdminServices adminServices)
         {
             _context = context;
+            this.adminServices = adminServices;
         }
 
         // GET: AdminProducts
+
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Products.ToListAsync());
+            return View(await adminServices.GetProductAsync());
         }
 
         // GET: AdminProducts/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var product = await _context.Products
-                .FirstOrDefaultAsync(m => m.Id == id);
+            Product product = await adminServices.GetProduct(id);
             if (product == null)
             {
                 return NotFound();
             }
-
             return View(product);
         }
 
@@ -59,25 +55,18 @@ namespace ECommerceWebSite.Controllers.Admin
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(AdminProductViewModel model)
+        public async Task<IActionResult> Create([Bind("Id,Title,Price,CreationDate,DisableDate,RemoveDate,PictureAddress,Quantity")] Product product ,
+            IFormFile picture ,string Tags)
         {
+            List<string> tagString = Tags.Split(" ").ToList();
+            List<Tag> tags = tagString.Select(x => new Tag(){ tag = x.Trim()}).ToList();
+
             if (ModelState.IsValid)
             {
-                string uniqueFileName = UploadedFile(model);
-                Product product = new Product
-                {
-                    Title = model.Title,
-                    CreationDate = model.CreationDate,
-                    DisableDate = model.DisableDate,
-                    Price = model.Price,
-                    Quantity = model.Quantity,
-                    RemoveDate = model.RemoveDate,
+                AddProductViewModel respos =  await adminServices.AddProduct(product, picture, null, tags);
+                //TODO do this on ajax later to show respons to create action 
 
-                };
-
-                _context.Add(product);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Create));
             }
             return View(product);
         }
@@ -91,7 +80,7 @@ namespace ECommerceWebSite.Controllers.Admin
                 return NotFound();
             }
 
-            var product = await _context.Products.FindAsync(id);
+            var product = await adminServices.GetProduct(id);
             if (product == null)
             {
                 return NotFound();
@@ -104,19 +93,24 @@ namespace ECommerceWebSite.Controllers.Admin
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Price,CreationDate,DisableDate,RemoveDate,PictureAddress,Quantity")] Product product)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Price,CreationDate,DisableDate,RemoveDate,PictureAddress,Quantity")] Product product,
+            IFormFile picture, string Tags)
         {
             if (id != product.Id)
             {
                 return NotFound();
             }
 
+            List<string> tagString = Tags.Split(" ").ToList();
+            List<Tag> tags = tagString.Select(x => new Tag() { tag = x.Trim() }).ToList();
+
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _context.Update(product);
-                    await _context.SaveChangesAsync();
+                    AddProductViewModel respos = await adminServices.EditProduct(product, picture, null, tags);
+                    //TODO do this on ajax later to show respons to edit action 
+
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -157,9 +151,12 @@ namespace ECommerceWebSite.Controllers.Admin
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var product = await _context.Products.FindAsync(id);
-            _context.Products.Remove(product);
-            await _context.SaveChangesAsync();
+
+
+            var product = await adminServices.GetProduct(id);
+            var respons = adminServices.DeleteProduct(product);
+
+            //TODO do this on ajax later to show respons to delete action 
             return RedirectToAction(nameof(Index));
         }
 

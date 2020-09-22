@@ -74,6 +74,7 @@ namespace ECommerceWebSite
             services.AddTransient<ICategoryServices, CategoryServices>();
             services.AddTransient<IOrderServices, OrderServices>();
             services.AddTransient<ICartServices, CartServices>();
+            services.AddTransient<IAdminServices, AdminServices>();
             services.AddTransient<ChangeRequestUrl>();
             services.AddTransient<DatabaseGuard>();
             services.AddMvc().AddRazorRuntimeCompilation();

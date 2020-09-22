@@ -1,55 +1,8 @@
 ﻿@model List<ECommerceWebSite.Models.ViewModels.ProductViewModel>
     <script>
     window.onload = QueryOrder;
-    function QueryOrder() {
-        var TotalPrice = 0;
-        $.ajax({
-            type: "GET",
-            url: "GetProductOfOpenCart",
-            datatype: "json",
-            success: function (data) {
-                //alert(JSON.stringify(data));
-                console.log(data);
-                TotalPrice = data.totalPrice;
-                document.getElementById("price").innerText = TotalPrice;
-            },
-            error: function (request, error) {
-                alert(JSON.stringify(request));
-                alert(JSON.stringify(error));
-                return;
-            }
-
-        });
-
-    }
 
 
-    function AddToCard(id) {
-        //TODO:
-        //Must handle cookie information
-        data = {
-            productId: id,
-        }
-
-        $.ajax({
-            data: data,
-            type: "GET",
-            url: "AddProductToCart",
-            datatype: "json",
-            success: function (data) {
-                QueryOrder();
-            },
-            error: function (request, error) {
-                alert(JSON.stringify(request));
-                alert(JSON.stringify(error));
-            }
-
-        });
-
-
-
-
-    }
     </script>
 
     <div class="row text-center">
@@ -60,7 +13,7 @@
         {
             <div class="col-sm-3 pb-2">
                 @*<a href="">*@
-                <img src="~/image/product/@(new Random(Guid.NewGuid().GetHashCode()).Next(1,8)).png" class="img-thumbnail w-100" />
+                <img src="~/images/@item.ImageAddress" class="img-thumbnail w-100" />
                 @*</a>*@
                 <h2>@item.Title</h2>
                 <p class="form-group">قیمت محصول: @item.Price ریال</p>

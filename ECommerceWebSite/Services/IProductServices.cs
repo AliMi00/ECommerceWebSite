@@ -13,6 +13,7 @@ namespace ECommerceWebSite.Services
         /// <returns></returns>
         List<ProductViewModel> GetProducts(int categoryId,bool deleted = false);
         List<ProductViewModel> GetProducts(string categoryId, bool deleted = false);
+        List<ProductViewModel> GetProducts(bool deleted = false);
         int GetCategoryId(string categoryName);
 
     }

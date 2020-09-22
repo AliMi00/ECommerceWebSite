@@ -28,7 +28,8 @@ namespace ECommerceWebSite.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            var products =  productServices.GetProducts();
+            return View("CategoryFilter",products);
         }
         public IActionResult CategoryFilter(int categoryId)
         {

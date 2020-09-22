@@ -12,7 +12,7 @@ namespace ECommerceWebSite.Services
     /// <summary>
     /// This Service Use just for Admin Panel 
     /// </summary>
-    interface IAdminServices
+    public interface IAdminServices
     {
         /// <summary>
         /// save file in images folder and return unique file path of the file 
@@ -23,7 +23,8 @@ namespace ECommerceWebSite.Services
         Task<AddProductViewModel> AddProduct(Product product, IFormFile file, ICollection<ProductCategory> productCategories = null,ICollection<Tag> tags = null);
         Task<AddProductViewModel> EditProduct(Product product, IFormFile file, ICollection<ProductCategory> productCategories = null, ICollection<Tag> tags = null);
         AddProductViewModel DeleteProduct(Product product);
-
+        Task<Product> GetProduct(int? id);
+        Task<List<Product>> GetProductAsync(bool include = false);
 
 
     }

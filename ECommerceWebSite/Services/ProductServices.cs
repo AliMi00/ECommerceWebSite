@@ -42,6 +42,21 @@ namespace ECommerceWebSite.Services
                     Price = x.Price
                 }).ToList();
         }
+        public List<ProductViewModel> GetProducts(bool deleted = false)
+        {
+            return db.Products
+                .Where(p => !p.RemoveDate.HasValue &&
+                            !p.DisableDate.HasValue &&
+                            p.Quantity > 0 
+                            )
+                .Select(x => new ProductViewModel()
+                {
+                    ImageAddress = x.PictureAddress,
+                    Title = x.Title,
+                    Id = x.Id,
+                    Price = x.Price
+                }).ToList();
+        }
 
         public List<ProductViewModel> GetProducts(string categoryName, bool deleted)
         {

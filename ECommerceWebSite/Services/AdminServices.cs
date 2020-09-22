@@ -3,6 +3,7 @@ using ECommerceWebSite.Models.DbModels;
 using ECommerceWebSite.Models.ViewModels.Admin;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -19,6 +20,34 @@ namespace ECommerceWebSite.Services
         {
             this.db = db;
             this.webHostEnvironment = webHostEnvironment;
+        }
+
+        public async Task<List<Product>> GetProductAsync(bool include = false)
+        {
+            if (include)
+            {
+                return db.Products.Include(x => x.ProductTags).Include(x => x.ProductCategories).ToList();
+
+            }
+            return await db.Products.ToListAsync();
+        }
+        public async Task<Product> GetProduct(int? id)
+        {
+            if (id == null)
+            {
+                return null;
+            }
+
+            var product = await db.Products.Where(x => x.Id == id).Include(x => x.ProductTags)
+                .FirstOrDefaultAsync();
+
+            if (product == null)
+            {
+                return null;
+            }
+
+
+            return product;
         }
         public async Task<AddProductViewModel> AddProduct(Product product,IFormFile file = null, ICollection<ProductCategory> productCategories = null, ICollection<Tag> tags = null)
         {
@@ -127,8 +156,8 @@ namespace ECommerceWebSite.Services
             {
                 string uploadsFolder = Path.Combine(webHostEnvironment.WebRootPath, "images");
                 uniqueFileName = Guid.NewGuid().ToString() + "_" + file.FileName;
-                uniqueFileName = Path.Combine(uploadsFolder, uniqueFileName);
-                using (var fileStream = new FileStream(uniqueFileName, FileMode.Create))
+                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
                 {
                     await file.CopyToAsync(fileStream);
                 }
@@ -160,6 +189,8 @@ namespace ECommerceWebSite.Services
 
             
         }
+
+
 
 
     }
