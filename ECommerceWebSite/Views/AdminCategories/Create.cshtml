@@ -1,4 +1,4 @@
-﻿@model ECommerceWebSite.Models.DbModels.Product
+﻿@model ECommerceWebSite.Models.DbModels.Category
 
 @{
     ViewData["Title"] = "Create";
@@ -6,11 +6,11 @@
 
 <h1>Create</h1>
 
-<h4>Product</h4>
+<h4>Category</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create" enctype="multipart/form-data" >
+        <form asp-action="Create" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Title" class="control-label"></label>
@@ -18,29 +18,14 @@
                 <span asp-validation-for="Title" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Price" class="control-label"></label>
-                <input asp-for="Price" class="form-control" />
-                <span asp-validation-for="Price" class="text-danger"></span>
-            </div>
-            <div class="form-group">
                 <label asp-for="DisableDate" class="control-label"></label>
                 <input asp-for="DisableDate" class="form-control" />
                 <span asp-validation-for="DisableDate" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Quantity" class="control-label"></label>
-                <input asp-for="Quantity" class="form-control" />
-                <span asp-validation-for="Quantity" class="text-danger"></span>
-            </div>
-            <div class="form-group">
                 <label class="control-label"> Picture</label>
-                <input type="file" name="picture" title="picture" class="form-control" />
+                <input type="file" name="file" title="Picture" class="form-control" />
                 <span class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label class="control-label"> Tag</label>
-                <input type="text" name="Tags" title="Tags" class="form-control" />
-                <span  class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />

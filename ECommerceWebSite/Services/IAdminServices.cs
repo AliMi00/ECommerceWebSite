@@ -25,7 +25,13 @@ namespace ECommerceWebSite.Services
         AddProductViewModel DeleteProduct(Product product);
         Task<Product> GetProduct(int? id);
         Task<List<Product>> GetProductAsync(bool include = false);
-
+        Task<List<Category>> GetCategoriesAsync();
+        Task<AddProductViewModel> DeleteCategory(Category category);
+        Task<AddProductViewModel> DeleteCategory(int? id);
+        Task<AddProductViewModel> EditCategory(Category category, IFormFile file);
+        Task<AddProductViewModel> AddCategory(Category category, IFormFile file);
+        Task<Category> GetCategoryAsync(int? id);
+        bool CategoryExists(int id);
 
     }
 }
