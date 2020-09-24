@@ -146,5 +146,17 @@ namespace ECommerceWebSite.Controllers
             }
             return Json(result);
         }
+
+        public IActionResult Detail(int id)
+        {
+            ProductDetailViewModel respons = new ProductDetailViewModel();
+            respons = productServices.GetProduct(id);
+            if(respons == null)
+            {
+                return NotFound();
+            }
+
+            return View(respons);
+        }
     }
 }

@@ -1,5 +1,7 @@
 ﻿using ECommerceWebSite.Data;
+using ECommerceWebSite.Models.DbModels;
 using ECommerceWebSite.Models.ViewModels;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -65,6 +67,29 @@ namespace ECommerceWebSite.Services
         private int GetCategoryId(string categoryName)
         {
             return db.Categories.Single(c => c.Title == categoryName).Id;
+        }
+        public ProductDetailViewModel GetProduct(int id)
+        {
+            ProductDetailViewModel respos = new ProductDetailViewModel();
+            Product product = db.Products.
+                Where(x => x.Id == id && !x.DisableDate.HasValue && !x.RemoveDate.HasValue).Include(x => x.ProductTags).SingleOrDefault();
+            if(product == null)
+            {
+                return null;
+            }
+
+            string tags = "";
+            foreach(Tag tag in product.ProductTags)
+            {
+                tags += " " + tag.tag;
+            }
+            respos.Id = product.Id;
+            respos.PictureAddress = product.PictureAddress;
+            respos.Price = product.Price;
+            respos.Title = product.Title;
+            respos.ProductTags = tags;
+            
+            return respos;
         }
      
     }

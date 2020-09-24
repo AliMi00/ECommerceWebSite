@@ -1,4 +1,4 @@
-﻿@model ECommerceWebSite.Models.DbModels.Product
+﻿@model ECommerceWebSite.Models.ViewModels.ProductDetailViewModel
 
 @{
     ViewData["Title"] = "Details";
@@ -23,33 +23,20 @@
             @Html.DisplayFor(model => model.Price)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.CreationDate)
+            @Html.DisplayNameFor(model => model.ProductTags)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.CreationDate)
+            @Html.DisplayFor(model => model.ProductTags)
         </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.DisableDate)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.DisableDate)
-        </dd>
+
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.PictureAddress)
         </dt>
         <dd class="col-sm-10">
             <img src="~/images/@Model.PictureAddress" class="img-thumbnail w-100" />
         </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Quantity)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Quantity)
-        </dd>
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>
-
