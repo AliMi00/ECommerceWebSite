@@ -17,7 +17,7 @@ namespace ECommerceWebSite.Services
             this.db = db;
         }
 
-
+        //add product to cart with quantity it check if exist increase the quantity 
         public ProductAddToOrderViewModel addToCart(string Username, int productId, int quantity = 1)
         {
             ProductAddToOrderViewModel respons = new ProductAddToOrderViewModel();
@@ -157,7 +157,7 @@ namespace ECommerceWebSite.Services
 
         }
 
-        public Customer GetCustomer(string Username)
+        private Customer GetCustomer(string Username)
         {
             return db.Customers.SingleOrDefault(c => c.UserName == Username);
 
@@ -166,11 +166,13 @@ namespace ECommerceWebSite.Services
         {
             return db.Products.SingleOrDefault(p => p.Id == productId && !p.DisableDate.HasValue && !p.RemoveDate.HasValue);
         }
+        // Set Delete date for all the cart item of the TempCartId
         public async Task DeleteTempCart(string tempCartId)
         {
             await db.TempCartItems.Where(x => x.TempCartId == tempCartId).ForEachAsync(x => x.DeletedDate = DateTime.Now);
             await db.SaveChangesAsync(true);
         }
+        // delete single cart item from Cart by cartItem Id
         public async Task<ResponsViewModel> DeleteCartItem(int ItemId)
         {
             ResponsViewModel respons = new ResponsViewModel();

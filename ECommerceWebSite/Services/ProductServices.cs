@@ -57,12 +57,12 @@ namespace ECommerceWebSite.Services
                     Price = x.Price
                 }).ToList();
         }
-
+        //use when we need to access with category name 
         public List<ProductViewModel> GetProducts(string categoryName, bool deleted)
         {
-            return GetProducts(GetCategoryId(categoryName));
+            return GetProducts(GetCategoryId(categoryName), deleted);
         }
-        public int GetCategoryId(string categoryName)
+        private int GetCategoryId(string categoryName)
         {
             return db.Categories.Single(c => c.Title == categoryName).Id;
         }

@@ -14,6 +14,7 @@ namespace ECommerceWebSite.Services
         {
             db = _db;
         }
+        //return list of category where not been disabled or removed by admin
         public List<CategoryViewModel> GetCategories()
         {
             return db.Categories

@@ -11,7 +11,6 @@ namespace ECommerceWebSite.Services
     {
         ProductAddToOrderViewModel addToCart(string Username, int productId, int quantity = 1);
         List<CartItem> GetCartList(string userName);
-        Customer GetCustomer(string Username);
         Product GetProduct(int productId);
         ProductAddToOrderViewModel addToTempCart(string tempCartId, int productId, int quantity = 1);
         List<TempCartItem> GetTempCartList(string tempCartId);

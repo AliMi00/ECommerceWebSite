@@ -22,6 +22,7 @@ namespace ECommerceWebSite.Services
             this.webHostEnvironment = webHostEnvironment;
         }
 
+        //return list of all products even mark as deleted 
         public async Task<List<Product>> GetProductAsync(bool include = false)
         {
             if (include)
@@ -31,6 +32,8 @@ namespace ECommerceWebSite.Services
             }
             return await db.Products.ToListAsync();
         }
+
+        //return product and all categorys for adding product or editing it
         public async Task<AdminCreateProductViewModel> GetProduct(int? id)
         {
             if (id == null)
@@ -54,6 +57,7 @@ namespace ECommerceWebSite.Services
             };
             return respons;
         }
+        //Add product and tags and single category IMPORTANT need to fixing on client side to add multiple category 
         public async Task<AddProductViewModel> AddProduct(Product product,IFormFile file = null, int? CategoryId = null, ICollection<Tag> tags = null)
         {
             AddProductViewModel respons = new AddProductViewModel();
@@ -111,9 +115,7 @@ namespace ECommerceWebSite.Services
             return respons;
 
         }
-
-
-
+        //edit product and tags and category IMPORTANT it does delete last tags and renew them 
         public async Task<AddProductViewModel> EditProduct(Product product, IFormFile file = null, int? CategoryId = null, ICollection<Tag> tags = null)
         {
             if(!db.Products.Any(x => x.Id == product.Id))
@@ -163,7 +165,7 @@ namespace ECommerceWebSite.Services
             respons.Succeed = true;
             return respons;
         }
-
+        //save image in wwwroot folder with uniqe id and return the file name 
         public async Task<string> UploadImage(IFormFile file)
         {
             string uniqueFileName = null;
@@ -181,7 +183,7 @@ namespace ECommerceWebSite.Services
             }
             return uniqueFileName;
         }
-
+        //set remove date to product we dont delete the item bcoz of db issues 
         public AddProductViewModel DeleteProduct(Product product)
         {
             try
@@ -206,7 +208,7 @@ namespace ECommerceWebSite.Services
 
             
         }
-
+        //add new category with picture picture is requeird 
         public async Task<AddProductViewModel> AddCategory(Category category, IFormFile file)
         {
             AddProductViewModel respons = new AddProductViewModel();
@@ -247,6 +249,7 @@ namespace ECommerceWebSite.Services
             await db.SaveChangesAsync(true);
             return respons;
         }
+        //edit category image is requeird 
         public async Task<AddProductViewModel> EditCategory(Category category, IFormFile file)
         {
             AddProductViewModel respons = new AddProductViewModel();
@@ -287,6 +290,7 @@ namespace ECommerceWebSite.Services
             await db.SaveChangesAsync(true);
             return respons;
         }
+        //set remove date for category it doesnt delete the category from db just add remove date 
         public async Task<AddProductViewModel> DeleteCategory(Category category)
         {
             AddProductViewModel respons = new AddProductViewModel();
@@ -318,43 +322,17 @@ namespace ECommerceWebSite.Services
             }
 
         }
+        //set remove date for category it doesnt delete the category from db just add remove date by id 
         public async Task<AddProductViewModel> DeleteCategory(int? id)
         {
-            AddProductViewModel respons = new AddProductViewModel();
             Category category = await GetCategoryAsync(id);
-            if (category == null)
-            {
-                respons.Message = "invalid Category";
-                respons.Succeed = false;
-                return respons;
-            }
-            try
-            {
-                category.RemoveDate = DateTime.Now;
-                db.Categories.Update(category);
-                await db.SaveChangesAsync(true);
-
-                return new AddProductViewModel()
-                {
-                    Message = "Category Deleted",
-                    Succeed = true
-                };
-            }
-            catch
-            {
-                return new AddProductViewModel()
-                {
-                    Message = "Category NOT Deleted",
-                    Succeed = false
-                };
-            }
+            return await DeleteCategory(category);
 
         }
+        //get un deleted categories List
+        public async Task<List<Category>> GetCategoriesAsync() => await db.Categories.Where(x => !x.RemoveDate.HasValue).ToListAsync();
 
-        public async Task<List<Category>> GetCategoriesAsync()
-        {
-            return await db.Categories.Where(x => !x.RemoveDate.HasValue).ToListAsync();
-        }
+        //get single category
         public async Task<Category> GetCategoryAsync(int? id)
         {
             if (id == null)

@@ -19,6 +19,8 @@ namespace ECommerceWebSite.Services
             this.cartServices = cartServices;
         }
 
+
+        //add cart to order and delete from cart (mark as delete) or increase the quentity if exist 
         public ProductAddToOrderViewModel AddCartToOrder(string Username, int productId, int quantity = 1)
         {
             var responseModel = new ProductAddToOrderViewModel();
@@ -122,7 +124,6 @@ namespace ECommerceWebSite.Services
 
 
         }
-
         //same as getOrderDetails but in difrent aproch 
         public OrderViewModel CustomerOrderDetails(int OrderId, string Username)
         {
@@ -189,7 +190,7 @@ namespace ECommerceWebSite.Services
             return totalChanged;
 
         }
-
+        //for checkout part add authority to order 
         public bool AddAuthorityToOrder(string username, string authority, int? orderId = null)
         {
             var order = GetOrder(username, orderId);
@@ -201,18 +202,15 @@ namespace ECommerceWebSite.Services
             db.SaveChanges();
             return true;
         }
-
-        public Order GetOrder(string username, int? orderId = null, OrderStatusTypes? status = OrderStatusTypes.Open, bool withIncludes = false)
+        //return open order from order of user this will use for return open order 
+        public Order GetOrder(string username, int? orderId = null, bool withIncludes = false)
         {
+            OrderStatusTypes status = OrderStatusTypes.Open;
             Order order = null;
-            IQueryable<Order> orders = db.Orders.Where(x => x.Customer.UserName == username);
+            IQueryable<Order> orders = db.Orders.Where(x => x.Customer.UserName == username && x.OrderStatus == status);
             if (orderId.HasValue)
             {
                 orders = orders.Where(x => x.Id == orderId.Value);
-            }
-            if (status.HasValue)
-            {
-                orders = orders.Where(x => x.OrderStatus == status.Value);
             }
             if (withIncludes)
             {
@@ -235,16 +233,18 @@ namespace ECommerceWebSite.Services
                     return order;
             }
         }
-
+        //return customer by username 
         public Customer GetCustomer(string Username)
         {
             return db.Customers.SingleOrDefault(c => c.UserName == Username);
 
         }
+        //return product by id
         public Product GetProduct(int productId)
         {
             return db.Products.SingleOrDefault(p => p.Id == productId && !p.DisableDate.HasValue && !p.RemoveDate.HasValue);
         }
+        //return list of orders of customer by filter of status and order id we could include the product and order details with it 
         public List<Order> CustomerOrders(string username, int? orderId = null, OrderStatusTypes? status = OrderStatusTypes.Open, bool withIncludes = false)
         {
             List<Order> order = null;
@@ -281,7 +281,7 @@ namespace ECommerceWebSite.Services
 
 
         }
-
+        //add all cart item to order and set delete from cart it use when user submit the order 
         public int AddProductToCart(string UserName)
         {
             Customer customer = GetCustomer(UserName);
@@ -302,7 +302,7 @@ namespace ECommerceWebSite.Services
             return respose.Count(x => x.Succeed);
         }
 
-        //
+        
 
     }
 }
