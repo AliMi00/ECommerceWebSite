@@ -16,6 +16,9 @@
         <th>
             <label asp-for="First().OrderDate" class="control-label"></label>
         </th>
+        <th>
+            <label asp-for="First().Status" class="control-label"></label>
+        </th>
     </tr>
 
     @foreach (var item in Model)
@@ -29,6 +32,9 @@
             </td>
             <td>
                 <label class="control-label">@item.OrderDate</label>
+            </td>
+            <td>
+                <label class="control-label">@item.Status</label>
             </td>
         </tr>
     }

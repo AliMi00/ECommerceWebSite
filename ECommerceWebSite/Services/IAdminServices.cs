@@ -20,10 +20,10 @@ namespace ECommerceWebSite.Services
         /// <param name="file"></param>
         /// <returns></returns>
         Task<string> UploadImage(IFormFile file);
-        Task<AddProductViewModel> AddProduct(Product product, IFormFile file, ICollection<ProductCategory> productCategories = null,ICollection<Tag> tags = null);
-        Task<AddProductViewModel> EditProduct(Product product, IFormFile file, ICollection<ProductCategory> productCategories = null, ICollection<Tag> tags = null);
+        Task<AddProductViewModel> AddProduct(Product product, IFormFile file, int? categoryId = null,ICollection<Tag> tags = null);
+        Task<AddProductViewModel> EditProduct(Product product, IFormFile file,int? categoryId  = null, ICollection<Tag> tags = null);
         AddProductViewModel DeleteProduct(Product product);
-        Task<Product> GetProduct(int? id);
+        Task<AdminCreateProductViewModel> GetProduct(int? id);
         Task<List<Product>> GetProductAsync(bool include = false);
         Task<List<Category>> GetCategoriesAsync();
         Task<AddProductViewModel> DeleteCategory(Category category);

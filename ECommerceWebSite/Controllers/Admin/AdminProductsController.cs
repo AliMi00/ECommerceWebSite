@@ -36,18 +36,23 @@ namespace ECommerceWebSite.Controllers.Admin
         // GET: AdminProducts/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            Product product = await adminServices.GetProduct(id);
+            AdminCreateProductViewModel product = await adminServices.GetProduct(id);
             if (product == null)
             {
                 return NotFound();
             }
-            return View(product);
+            return View(product.Product);
         }
 
         // GET: AdminProducts/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            return View();
+            AdminCreateProductViewModel adminProductViewModel = new AdminCreateProductViewModel()
+            {
+                Product = new Product(),
+                categories = await adminServices.GetCategoriesAsync()
+            };
+            return View(adminProductViewModel);
         }
 
         // POST: AdminProducts/Create
@@ -56,21 +61,29 @@ namespace ECommerceWebSite.Controllers.Admin
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Title,Price,CreationDate,DisableDate,RemoveDate,PictureAddress,Quantity")] Product product ,
-            IFormFile picture ,string Tags)
+            IFormFile picture ,string Tags,int category)
         {
             List<string> tagString = Tags.Split(" ").ToList();
             List<Tag> tags = tagString.Select(x => new Tag(){ tag = x.Trim()}).ToList();
 
             if (ModelState.IsValid)
             {
-                AddProductViewModel respos =  await adminServices.AddProduct(product, picture, null, tags);
+                AddProductViewModel respos =  await adminServices.AddProduct(product, picture, category, tags);
                 //TODO do this on ajax later to show respons to create action 
 
                 return RedirectToAction(nameof(Create));
             }
             return View(product);
         }
-
+        public async Task<IActionResult> AddCategoryToProduct(int? id)
+        {
+            if(id == null)
+            {
+                return NotFound();
+            }
+            AdminCreateProductViewModel vm = await adminServices.GetProduct(id);
+            return View(vm);
+        }
 
         // GET: AdminProducts/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -94,21 +107,23 @@ namespace ECommerceWebSite.Controllers.Admin
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Price,CreationDate,DisableDate,RemoveDate,PictureAddress,Quantity")] Product product,
-            IFormFile picture, string Tags)
+            IFormFile picture, string Tags,int category)
         {
+            List<Tag> tags = new List<Tag>();
             if (id != product.Id)
             {
                 return NotFound();
             }
-
-            List<string> tagString = Tags.Split(" ").ToList();
-            List<Tag> tags = tagString.Select(x => new Tag() { tag = x.Trim() }).ToList();
-
+            if(Tags != null)
+            {
+                List<string> tagString = Tags.Trim().Split(" ").ToList();
+                tags = tagString.Select(x => new Tag() { tag = x.Trim() }).ToList();
+            }
             if (ModelState.IsValid)
             {
                 try
                 {
-                    AddProductViewModel respos = await adminServices.EditProduct(product, picture, null, tags);
+                    AddProductViewModel respos = await adminServices.EditProduct(product, picture, category, tags);
                     //TODO do this on ajax later to show respons to edit action 
 
                 }
@@ -154,7 +169,7 @@ namespace ECommerceWebSite.Controllers.Admin
 
 
             var product = await adminServices.GetProduct(id);
-            var respons = adminServices.DeleteProduct(product);
+            var respons = adminServices.DeleteProduct(product.Product);
 
             //TODO do this on ajax later to show respons to delete action 
             return RedirectToAction(nameof(Index));

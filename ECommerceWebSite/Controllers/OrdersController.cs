@@ -43,10 +43,10 @@ namespace ECommerceWebSite.Controllers
             return Json(order);
         }
 
-        //complited
+        //show sent orders 
         public IActionResult ShowOrders()
         {
-            var order = orderServices.CustomerOrders(UserName,null,OrderStatusTypes.Sent,false); 
+            var order = orderServices.CustomerOrders(UserName,null,null,false); 
             
             List<ShowOrderViewModel> viewModel;
             if(order != null)
@@ -55,7 +55,8 @@ namespace ECommerceWebSite.Controllers
                 {
                     Id = x.Id,
                     TotalPrice = x.AmountBuy,
-                    OrderDate = x.PaymentDate
+                    OrderDate = x.PaymentDate,
+                    Status = x.OrderStatus.ToString()
 
                 }).ToList();
             }
@@ -66,6 +67,7 @@ namespace ECommerceWebSite.Controllers
             return View(viewModel);
         }
 
+        
         public IActionResult AddToOrder()
         {
             int count = orderServices.AddProductToCart(UserName);

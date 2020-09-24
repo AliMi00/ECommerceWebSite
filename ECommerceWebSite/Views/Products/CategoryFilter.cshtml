@@ -1,8 +1,6 @@
 ﻿@model List<ECommerceWebSite.Models.ViewModels.ProductViewModel>
     <script>
     window.onload = QueryOrder;
-
-
     </script>
 
     <div class="row text-center">
@@ -13,10 +11,10 @@
         {
             <div class="col-sm-3 pb-2">
                 @*<a href="">*@
-                <img src="~/images/@item.ImageAddress" class="img-thumbnail w-100" />
+                <img src="~/images/@item.ImageAddress" class="img-thumbnail w-50" />
                 @*</a>*@
                 <h2>@item.Title</h2>
-                <p class="form-group">قیمت محصول: @item.Price ریال</p>
+                <p class="form-group">قیمت محصول: @item.Price</p>
                 <a asp-action="Detail" asp-route-CategoryId="@item.Id" class="btn btn-outline-success mb-2">مشخصات بیشتر...</a>
                 <button onclick="AddToCard(@item.Id)" class="btn btn-success">اضافه به سبد خرید</button>
             </div>

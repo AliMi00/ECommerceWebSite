@@ -18,6 +18,7 @@ namespace ECommerceWebSite.Data
         DbSet<Product> Products { get; set; }
         DbSet<CartItem> CartItems { get; set; }
         DbSet<Tag> Tags { get; set; }
+        DbSet<TempCartItem> TempCartItems { get; set; }
 
         void Dispose();
         ValueTask DisposeAsync();

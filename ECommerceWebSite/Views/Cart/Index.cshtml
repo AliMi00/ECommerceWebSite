@@ -2,6 +2,7 @@
 @{
     ViewData["Title"] = "Cart";
 }
+
 @if (Model.CartItems.Count > 0)
 {
     <h1>سبد خرید شما  </h1>
@@ -26,7 +27,7 @@
     {
         <tr>
             <td>
-                <img alt="picture" class="img-thumbnail" src="@item.ImageAddress"/>
+                <img alt="picture" class="img-thumbnail w-50" src="~/images/@item.ImageAddress" />
             </td>
             <td>
                 <label class="control-label">@item.Title</label>
@@ -37,8 +38,9 @@
             <td>
                 <label class="control-label">@item.Quantity</label>
             </td>
-
-
+            <td>
+                <a asp-action="DeleteCartItem" asp-route-id="@item.Id"  class="btn btn-danger"> Delete this item</a>
+            </td>
         </tr>
     }
 

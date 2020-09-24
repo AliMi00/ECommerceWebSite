@@ -255,13 +255,14 @@ namespace ECommerceWebSite.Services
             }
             if (status.HasValue)
             {
-                orders = orders.Where(x => x.OrderStatus != status.Value);
+                orders = orders.Where(x => x.OrderStatus == status.Value);
             }
             if (withIncludes)
             {
                 orders = orders.Include(x => x.OrderDetails)
                                .ThenInclude(x => x.Product);
             }
+            order = orders.ToList();
             return order;
         }
         public bool PayForOrder(int Amount, string Username)

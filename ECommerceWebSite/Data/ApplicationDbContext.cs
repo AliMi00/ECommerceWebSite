@@ -24,6 +24,7 @@ namespace ECommerceWebSite.Data
         public DbSet<ProductCategory> ProductCategories { get; set; }
         public DbSet<CartItem> CartItems { get; set; }
         public DbSet<Tag> Tags { get; set; }
+        public DbSet<TempCartItem> TempCartItems { get; set; }
 
 
         public override int SaveChanges()

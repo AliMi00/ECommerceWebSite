@@ -13,6 +13,10 @@ namespace ECommerceWebSite.Services
         List<CartItem> GetCartList(string userName);
         Customer GetCustomer(string Username);
         Product GetProduct(int productId);
+        ProductAddToOrderViewModel addToTempCart(string tempCartId, int productId, int quantity = 1);
+        List<TempCartItem> GetTempCartList(string tempCartId);
+        Task DeleteTempCart(string tempCartId);
+        Task<ResponsViewModel> DeleteCartItem(int ItemId);
 
     }
 }

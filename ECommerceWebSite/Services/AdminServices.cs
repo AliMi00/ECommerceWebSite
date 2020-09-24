@@ -31,7 +31,7 @@ namespace ECommerceWebSite.Services
             }
             return await db.Products.ToListAsync();
         }
-        public async Task<Product> GetProduct(int? id)
+        public async Task<AdminCreateProductViewModel> GetProduct(int? id)
         {
             if (id == null)
             {
@@ -40,16 +40,21 @@ namespace ECommerceWebSite.Services
 
             var product = await db.Products.Where(x => x.Id == id).Include(x => x.ProductTags)
                 .FirstOrDefaultAsync();
+            var categories = await db.Categories.Where(x => !x.RemoveDate.HasValue).ToListAsync();
 
             if (product == null)
             {
                 return null;
             }
 
-
-            return product;
+            AdminCreateProductViewModel respons = new AdminCreateProductViewModel()
+            {
+                Product = product,
+                categories = categories
+            };
+            return respons;
         }
-        public async Task<AddProductViewModel> AddProduct(Product product,IFormFile file = null, ICollection<ProductCategory> productCategories = null, ICollection<Tag> tags = null)
+        public async Task<AddProductViewModel> AddProduct(Product product,IFormFile file = null, int? CategoryId = null, ICollection<Tag> tags = null)
         {
             AddProductViewModel respons = new AddProductViewModel();
             if(product == null)
@@ -86,10 +91,16 @@ namespace ECommerceWebSite.Services
                 respons.Message = "Product Added";
                 respons.Succeed = true;
             }
-            if(productCategories != null && respons.Succeed)
+            if(CategoryId != null && respons.Succeed)
             {
-                productCategories.Where(x => x.Product == null).Select(x => { x.Product = product; return x; }).ToList();
-                db.ProductCategories.AddRange(productCategories);
+
+                ProductCategory category = new ProductCategory()
+                {
+                    Product = product,
+                    Cateory = db.Categories.SingleOrDefault(x => x.Id == CategoryId),
+                    CreationDate = DateTime.Now,
+                };
+                db.ProductCategories.Add(category);
             }
             if(tags != null && respons.Succeed)
             {
@@ -103,7 +114,7 @@ namespace ECommerceWebSite.Services
 
 
 
-        public async Task<AddProductViewModel> EditProduct(Product product, IFormFile file = null, ICollection<ProductCategory> productCategories = null, ICollection<Tag> tags = null)
+        public async Task<AddProductViewModel> EditProduct(Product product, IFormFile file = null, int? CategoryId = null, ICollection<Tag> tags = null)
         {
             if(!db.Products.Any(x => x.Id == product.Id))
             {
@@ -129,11 +140,16 @@ namespace ECommerceWebSite.Services
                     return respons;                                              
                 }
             }
-            if(productCategories != null)
+            if(CategoryId != null)
             {
-                db.ProductCategories.RemoveRange(db.ProductCategories.Where(x => x.Product == product));
-                db.ProductCategories.AddRange(productCategories);
 
+                ProductCategory category = new ProductCategory()
+                {
+                    Product = product,
+                    Cateory = db.Categories.SingleOrDefault(x => x.Id == CategoryId),
+                    CreationDate = DateTime.Now,
+                };
+                db.ProductCategories.Add(category);
             }
             if (tags != null)
             {
@@ -154,8 +170,9 @@ namespace ECommerceWebSite.Services
 
             if (file != null)
             {
+                
                 string uploadsFolder = Path.Combine(webHostEnvironment.WebRootPath, "images");
-                uniqueFileName = Guid.NewGuid().ToString() + "_" + file.FileName;
+                uniqueFileName = Guid.NewGuid().ToString() + "_" + file.ContentType;
                 string filePath = Path.Combine(uploadsFolder, uniqueFileName);
                 using (var fileStream = new FileStream(filePath, FileMode.Create))
                 {
