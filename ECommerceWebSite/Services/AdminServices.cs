@@ -23,6 +23,7 @@ namespace ECommerceWebSite.Services
             this.webHostEnvironment = webHostEnvironment;
         }
 
+        //TODO: this need to be change in future make problem if we have so many product 
         //return list of all products even mark as deleted 
         public async Task<List<Product>> GetProductAsync(bool include = false)
         {
@@ -367,7 +368,7 @@ namespace ECommerceWebSite.Services
                                           x.OrderDate <= endDate);
             if (orderStatus != null)
             {
-                orders.Where(x => x.OrderStatus == orderStatus);
+                orders = orders.Where(x => x.OrderStatus == orderStatus);
             }
             if (include)
             {
@@ -381,7 +382,7 @@ namespace ECommerceWebSite.Services
             var order = db.Orders.Where(x => x.Id == orderId);
             if (include)
             {
-                order.Include(x => x.OrderDetails).ThenInclude(x => x.Product).ToList();
+                order.Include(x => x.Customer).Include(x => x.OrderDetails).ThenInclude(x => x.Product).ToList();
             }
             return await order.SingleOrDefaultAsync();
 

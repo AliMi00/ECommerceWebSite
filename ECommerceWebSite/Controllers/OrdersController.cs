@@ -7,11 +7,13 @@ using ECommerceWebSite.Models;
 using ECommerceWebSite.Models.DbModels;
 using ECommerceWebSite.Models.ViewModels;
 using ECommerceWebSite.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ZarinpalSandbox;
 
 namespace ECommerceWebSite.Controllers
 {
+    [Authorize]
     public class OrdersController : Controller
     {
         private readonly IOrderServices orderServices;
@@ -30,23 +32,20 @@ namespace ECommerceWebSite.Controllers
             this.productServices = productServices;
             this.cartServices = cartServices;
         }
-        public IActionResult Index()
-        {
-            return View();
-        }
+        //use for future feature 
         public IActionResult GetUserOrdersReport()
         {
             var orders = orderServices.CustomerOrders(UserName);
             return Json(orders);
         }
-
+        //use for future feature 
         public IActionResult GetUserDetailsReport(int OrderId)
         {
             var order = orderServices.CustomerOrderDetails(OrderId, UserName);
             return Json(order);
         }
 
-        //show sent orders 
+        //show all orders of customer
         public IActionResult ShowOrders()
         {
             var order = orderServices.CustomerOrders(UserName,null,null,false); 
@@ -137,6 +136,11 @@ namespace ECommerceWebSite.Controllers
             }
             return response;
         }
+        /// <summary>
+        /// use to checkout after main checkout part mainly in order list 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task<IActionResult> CheckAgainOut(int id)
         {
             var totalPrice = orderServices.GetOrder(UserName,id)?.AmountBuy;

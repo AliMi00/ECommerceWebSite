@@ -25,10 +25,13 @@ namespace ECommerceWebSite.Controllers.Admin
             this.adminServices = adminServices;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(OrderStatusTypes? statusType)
         {
-            var orders =await adminServices.GetOrdersAsync();
-            return View(orders);
+            if (statusType.HasValue)
+            {
+                return View(await adminServices.GetOrdersAsync(statusType));
+            }
+            return View(await adminServices.GetOrdersAsync());
         }
 
         public async Task<IActionResult> Details(int? id)

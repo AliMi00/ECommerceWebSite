@@ -112,11 +112,7 @@ namespace ECommerceWebSite.Services
 
         }
 
-        /// <summary>
-        /// return list of itme in cart and totla price of the user 
-        /// </summary>
-        /// <param name="userName"></param>
-        /// <returns></returns>
+        // return list of itme in cart and totla price of the user 
         public List<CartItem> GetCartList(string userName)
         {
             List<CartItem> cartItems;

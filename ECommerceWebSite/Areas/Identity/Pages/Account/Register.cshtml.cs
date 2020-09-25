@@ -64,6 +64,9 @@ namespace ECommerceWebSite.Areas.Identity.Pages.Account
 
             [Required]
             public string PostCode { get; set; }
+            [Required]
+            public string Address { get; set; }
+
         }
 
         public async Task OnGetAsync(string returnUrl = null)
@@ -78,7 +81,7 @@ namespace ECommerceWebSite.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new Customer { UserName = Input.Email, Email = Input.Email , PostCode = Input.PostCode};
+                var user = new Customer { UserName = Input.Email, Email = Input.Email , PostCode = Input.PostCode,Address = Input.Address};
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {

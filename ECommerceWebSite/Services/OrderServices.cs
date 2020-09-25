@@ -94,37 +94,8 @@ namespace ECommerceWebSite.Services
 
 
         }
-        //return order include orderdetails list  
-        public OrderViewModel GetOrderDetails(int OrderId, string Username)
-        {
-            OrderViewModel responseModel = new OrderViewModel();
 
-
-            var order = GetOrder(Username, OrderId, withIncludes: true);
-            if (order == null)
-                return responseModel;
-
-
-            var details =
-                order.OrderDetails
-                     .Where(x => !x.DeleteDate.HasValue)
-                     .Select(x => new OrderDetailViewModel()
-                     {
-                         Id = x.Id,
-                         ImageAddress = x.Product.PictureAddress,
-                         Price = x.UnitPriceBuy,
-                         Title = x.Product.Title
-                     });
-            responseModel.Details = details.ToList();
-            responseModel.TotalPrice = details.Sum(x => x.Price);
-            responseModel.Id = OrderId;
-
-            return responseModel;
-
-
-
-        }
-        //same as getOrderDetails but in difrent aproch 
+        //return order include orderdetails list 
         public OrderViewModel CustomerOrderDetails(int OrderId, string Username)
         {
             OrderViewModel responseModel = new OrderViewModel();
@@ -234,13 +205,13 @@ namespace ECommerceWebSite.Services
             }
         }
         //return customer by username 
-        public Customer GetCustomer(string Username)
+        private Customer GetCustomer(string Username)
         {
             return db.Customers.SingleOrDefault(c => c.UserName == Username);
 
         }
         //return product by id
-        public Product GetProduct(int productId)
+        private Product GetProduct(int productId)
         {
             return db.Products.SingleOrDefault(p => p.Id == productId && !p.DisableDate.HasValue && !p.RemoveDate.HasValue);
         }

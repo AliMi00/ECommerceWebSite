@@ -48,33 +48,39 @@ namespace ECommerceWebSite.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+        //use to add dummy data to db for test
         [HttpGet]
         [Authorize(Roles = "Admin")]
-        public IActionResult seeddb(string secret)
+        public IActionResult seeddb()
         {
-            if (secret == "ali")
+            if (true)
             {
                 List<Category> categories = new List<Category>()
                 {
                     new Category()
                     {
                         Title = "خانگی",
+                        PictureAddress ="034cc792-2c2e-4626-9a0f-8332139a214d_computer-wallpaper-hd-1440x900-409771.jpg",
                         CreationDate = DateTime.Now,
                     },
                     new Category()
                     {
                         Title = "ورزشی",
+                        PictureAddress ="034cc792-2c2e-4626-9a0f-8332139a214d_computer-wallpaper-hd-1440x900-409771.jpg",
                         CreationDate = DateTime.Now,
                     },
                     new Category()
                     {
                         Title = "اداری",
                         CreationDate = DateTime.Now,
+                        PictureAddress ="034cc792-2c2e-4626-9a0f-8332139a214d_computer-wallpaper-hd-1440x900-409771.jpg",
+
                     },
                      new Category()
                     {
                         Title = "اسباب‌بازی",
                         CreationDate = DateTime.Now,
+                        PictureAddress ="034cc792-2c2e-4626-9a0f-8332139a214d_computer-wallpaper-hd-1440x900-409771.jpg",
                     }
                 };
 
@@ -89,7 +95,11 @@ namespace ECommerceWebSite.Controllers
                     Product prod = new Product()
                     {
                         CreationDate = DateTime.Now,
-                        Title = $"Product{i}"
+                        Title = $"Product{i}",
+                        PictureAddress = "034cc792-2c2e-4626-9a0f-8332139a214d_computer-wallpaper-hd-1440x900-409771.jpg",
+                        Price = 1000,
+                        Quantity = 100
+
                     };
                     db.Products.Add(prod);
                     db.SaveChanges();
