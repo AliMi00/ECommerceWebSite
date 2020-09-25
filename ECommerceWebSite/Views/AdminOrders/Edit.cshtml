@@ -1,0 +1,60 @@
+﻿@model ECommerceWebSite.Models.ViewModels.Admin.EditOrderAdminViewModel
+@using ECommerceWebSite.Models.DbModels
+@{
+    ViewData["Title"] = "Edit";
+}
+
+
+
+@if (!string.IsNullOrEmpty(Model.ResponsViewModel.Message))
+{
+    <script>alert("@Model.ResponsViewModel.Message");</script>
+}
+<h1>Edit</h1>
+
+<h4>Order</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Order.Id" />
+            <div class="form-group">
+                <label asp-for="Order.OrderDate" class="control-label"></label>
+                <input asp-for="Order.OrderDate" class="form-control" readonly />
+                <span asp-validation-for="Order.OrderDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Order.AmountBuy" class="control-label"></label>
+                <input asp-for="Order.AmountBuy" class="form-control" readonly />
+                <span asp-validation-for="Order.AmountBuy" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Order.OrderStatus" class="control-label"></label>
+                <select name="orderStatus" asp-for="Order.OrderStatus" asp-items="Html.GetEnumSelectList<OrderStatusTypes>()" class="form-control"></select>
+                <span asp-validation-for="Order.OrderStatus" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Order.Authority" class="control-label"></label>
+                <input asp-for="Order.Authority" class="form-control" readonly />
+                <span asp-validation-for="Order.Authority" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Order.PaymentDate" class="control-label"></label>
+                <input asp-for="Order.PaymentDate" class="form-control" readonly />
+                <span asp-validation-for="Order.PaymentDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -32,6 +32,10 @@ namespace ECommerceWebSite.Services
         Task<AddProductViewModel> AddCategory(Category category, IFormFile file);
         Task<Category> GetCategoryAsync(int? id);
         bool CategoryExists(int id);
+        Task<List<Order>> GetOrdersAsync(OrderStatusTypes? orderStatus = null, DateTime? startDate = null, DateTime? endDate= null , bool include = false);
+        Task<Order> GetOrderAsync(int? orderId, bool include = false);
+        ResponsViewModel UpdateOrderStatus(int? id, OrderStatusTypes orderStatus);
+
 
     }
 }

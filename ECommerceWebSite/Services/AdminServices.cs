@@ -1,5 +1,6 @@
 ﻿using ECommerceWebSite.Data;
 using ECommerceWebSite.Models.DbModels;
+using ECommerceWebSite.Models.ViewModels;
 using ECommerceWebSite.Models.ViewModels.Admin;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -16,7 +17,7 @@ namespace ECommerceWebSite.Services
     {
         private readonly IApplicationDbContext db;
         private readonly IWebHostEnvironment webHostEnvironment;
-        public AdminServices(IApplicationDbContext db , IWebHostEnvironment webHostEnvironment)
+        public AdminServices(IApplicationDbContext db, IWebHostEnvironment webHostEnvironment)
         {
             this.db = db;
             this.webHostEnvironment = webHostEnvironment;
@@ -58,10 +59,10 @@ namespace ECommerceWebSite.Services
             return respons;
         }
         //Add product and tags and single category IMPORTANT need to fixing on client side to add multiple category 
-        public async Task<AddProductViewModel> AddProduct(Product product,IFormFile file = null, int? CategoryId = null, ICollection<Tag> tags = null)
+        public async Task<AddProductViewModel> AddProduct(Product product, IFormFile file = null, int? CategoryId = null, ICollection<Tag> tags = null)
         {
             AddProductViewModel respons = new AddProductViewModel();
-            if(product == null)
+            if (product == null)
             {
                 return new AddProductViewModel()
                 {
@@ -69,7 +70,7 @@ namespace ECommerceWebSite.Services
                     Succeed = false
                 };
             }
-            if(file == null)
+            if (file == null)
             {
                 return new AddProductViewModel()
                 {
@@ -95,7 +96,7 @@ namespace ECommerceWebSite.Services
                 respons.Message = "Product Added";
                 respons.Succeed = true;
             }
-            if(CategoryId != null && respons.Succeed)
+            if (CategoryId != null && respons.Succeed)
             {
 
                 ProductCategory category = new ProductCategory()
@@ -106,7 +107,7 @@ namespace ECommerceWebSite.Services
                 };
                 db.ProductCategories.Add(category);
             }
-            if(tags != null && respons.Succeed)
+            if (tags != null && respons.Succeed)
             {
                 tags.Where(x => x.Product == null).Select(x => { x.Product = product; return x; }).ToList();
                 db.Tags.AddRange(tags);
@@ -118,7 +119,7 @@ namespace ECommerceWebSite.Services
         //edit product and tags and category IMPORTANT it does delete last tags and renew them 
         public async Task<AddProductViewModel> EditProduct(Product product, IFormFile file = null, int? CategoryId = null, ICollection<Tag> tags = null)
         {
-            if(!db.Products.Any(x => x.Id == product.Id))
+            if (!db.Products.Any(x => x.Id == product.Id))
             {
                 return new AddProductViewModel()
                 {
@@ -139,10 +140,10 @@ namespace ECommerceWebSite.Services
                 {
                     respons.Message = "faild to upload image";
                     respons.Succeed = false;
-                    return respons;                                              
+                    return respons;
                 }
             }
-            if(CategoryId != null)
+            if (CategoryId != null)
             {
 
                 ProductCategory category = new ProductCategory()
@@ -158,7 +159,7 @@ namespace ECommerceWebSite.Services
                 db.Tags.RemoveRange(db.Tags.Where(x => x.Product == product));
                 db.Tags.AddRange(tags);
             }
-            
+
             db.Products.Update(product);
             await db.SaveChangesAsync(true);
             respons.Message = "product updated";
@@ -172,7 +173,7 @@ namespace ECommerceWebSite.Services
 
             if (file != null)
             {
-                
+
                 string uploadsFolder = Path.Combine(webHostEnvironment.WebRootPath, "images");
                 uniqueFileName = Guid.NewGuid().ToString() + "_" + file.ContentType;
                 string filePath = Path.Combine(uploadsFolder, uniqueFileName);
@@ -206,7 +207,7 @@ namespace ECommerceWebSite.Services
                 };
             }
 
-            
+
         }
         //add new category with picture picture is requeird 
         public async Task<AddProductViewModel> AddCategory(Category category, IFormFile file)
@@ -305,7 +306,7 @@ namespace ECommerceWebSite.Services
                 category.RemoveDate = DateTime.Now;
                 db.Categories.Update(category);
                 await db.SaveChangesAsync(true);
-                
+
                 return new AddProductViewModel()
                 {
                     Message = "Category Deleted",
@@ -350,6 +351,71 @@ namespace ECommerceWebSite.Services
             return db.Categories.Any(e => e.Id == id);
         }
 
+        //get orrder list 
+        public async Task<List<Order>> GetOrdersAsync(OrderStatusTypes? orderStatus = null, DateTime? startDate = null, DateTime? endDate = null , bool include = false)
+        {
+            if (!startDate.HasValue)
+            {
+                startDate = DateTime.Today.AddDays(-7);
+            }
+            if (!endDate.HasValue)
+            {
+                endDate = DateTime.Today;
+            }
 
+            var orders = db.Orders.Where(x => x.OrderDate >= startDate &&
+                                          x.OrderDate <= endDate);
+            if (orderStatus != null)
+            {
+                orders.Where(x => x.OrderStatus == orderStatus);
+            }
+            if (include)
+            {
+                orders.Include(x => x.OrderDetails).ThenInclude(x => x.Product);
+            }
+            return await orders.ToListAsync();
+        }
+
+        public async Task<Order> GetOrderAsync(int? orderId, bool include = false)
+        {
+            var order = db.Orders.Where(x => x.Id == orderId);
+            if (include)
+            {
+                order.Include(x => x.OrderDetails).ThenInclude(x => x.Product).ToList();
+            }
+            return await order.SingleOrDefaultAsync();
+
+        }
+
+        public ResponsViewModel UpdateOrderStatus(int? id,OrderStatusTypes orderStatus)
+        {
+            if(id == null)
+            {
+                return new ResponsViewModel()
+                {
+                    Message = "Invalid Order",
+                    Succeed = false
+                };
+            }
+            try
+            {
+                db.Orders.Where(x => x.Id == id).SingleOrDefault().OrderStatus = orderStatus;
+                db.SaveChanges();
+
+            }
+            catch
+            {
+                return new ResponsViewModel()
+                {
+                    Message = "something wrong",
+                    Succeed = false
+                };
+            }
+            return new ResponsViewModel()
+            {
+                Message = "Order Updated",
+                Succeed = true
+            };
+        }
     }
 }
