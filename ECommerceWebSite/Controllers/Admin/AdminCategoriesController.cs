@@ -10,9 +10,12 @@ using ECommerceWebSite.Models.DbModels;
 using ECommerceWebSite.Services;
 using Microsoft.AspNetCore.Http;
 using ECommerceWebSite.Models.ViewModels.Admin;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ECommerceWebSite.Controllers.Admin
 {
+    [Authorize(Roles = "Admin")]
+    [Route("/Admin/{controller}/{action=Index}/{id?}")]
     public class AdminCategoriesController : Controller
     {
         private readonly ApplicationDbContext _context;

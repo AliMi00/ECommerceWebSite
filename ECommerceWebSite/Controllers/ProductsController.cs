@@ -147,16 +147,25 @@ namespace ECommerceWebSite.Controllers
             return Json(result);
         }
 
-        public IActionResult Detail(int id)
+        //get details of product by id
+        public IActionResult Detail(int? id)
         {
             ProductDetailViewModel respons = new ProductDetailViewModel();
-            respons = productServices.GetProduct(id);
+            if(id != null)
+            {
+                respons = productServices.GetProduct(id);
+            }
             if(respons == null)
             {
                 return NotFound();
             }
 
             return View(respons);
+        }
+        public IActionResult Search(string searchProduct)
+        {
+            
+            return View(nameof(CategoryFilter), productServices.GetSearchedProducts(searchProduct));
         }
     }
 }

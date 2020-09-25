@@ -14,7 +14,8 @@ namespace ECommerceWebSite.Services
         List<ProductViewModel> GetProducts(int categoryId,bool deleted = false);
         List<ProductViewModel> GetProducts(string categoryId, bool deleted = false);
         List<ProductViewModel> GetProducts(bool deleted = false);
-        ProductDetailViewModel GetProduct(int id);
+        ProductDetailViewModel GetProduct(int? id);
+        List<ProductViewModel> GetSearchedProducts(string searchString, bool deleted = false);
 
     }
 }

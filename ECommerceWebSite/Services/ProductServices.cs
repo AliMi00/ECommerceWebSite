@@ -9,19 +9,15 @@ using System.Threading.Tasks;
 
 namespace ECommerceWebSite.Services
 {
-    public class ProductServices :IProductServices
+    public class ProductServices : IProductServices
     {
         private readonly IApplicationDbContext db;
         public ProductServices(IApplicationDbContext _db)
         {
             db = _db;
         }
-        /// <summary>
-        /// get all the available products by category filter
-        /// </summary>
-        /// <param name="categoryId"></param>
-        /// <param name="deleted"></param>
-        /// <returns></returns>
+        
+        // get all the available products by category filter2
         public List<ProductViewModel> GetProducts(int categoryId, bool deleted = false)
         {
             return db.Products
@@ -49,7 +45,7 @@ namespace ECommerceWebSite.Services
             return db.Products
                 .Where(p => !p.RemoveDate.HasValue &&
                             !p.DisableDate.HasValue &&
-                            p.Quantity > 0 
+                            p.Quantity > 0
                             )
                 .Select(x => new ProductViewModel()
                 {
@@ -68,18 +64,22 @@ namespace ECommerceWebSite.Services
         {
             return db.Categories.Single(c => c.Title == categoryName).Id;
         }
-        public ProductDetailViewModel GetProduct(int id)
+        public ProductDetailViewModel GetProduct(int? id)
         {
+            if(id == null)
+            {
+                return null;
+            }
             ProductDetailViewModel respos = new ProductDetailViewModel();
             Product product = db.Products.
                 Where(x => x.Id == id && !x.DisableDate.HasValue && !x.RemoveDate.HasValue).Include(x => x.ProductTags).SingleOrDefault();
-            if(product == null)
+            if (product == null)
             {
                 return null;
             }
 
             string tags = "";
-            foreach(Tag tag in product.ProductTags)
+            foreach (Tag tag in product.ProductTags)
             {
                 tags += " " + tag.tag;
             }
@@ -88,9 +88,36 @@ namespace ECommerceWebSite.Services
             respos.Price = product.Price;
             respos.Title = product.Title;
             respos.ProductTags = tags;
-            
+
             return respos;
         }
-     
+        public List<ProductViewModel> GetSearchedProducts(string searchString, bool deleted = false)
+        {
+            List<ProductViewModel> respons = new List<ProductViewModel>();
+
+            respons.AddRange(db.Products
+                .Where(p => !p.RemoveDate.HasValue &&
+                            !p.DisableDate.HasValue &&
+                            p.Quantity > 0 &&
+                            p.Title.Contains(searchString))
+                .Select(x => new ProductViewModel()
+                {
+                    ImageAddress = x.PictureAddress,
+                    Title = x.Title,
+                    Id = x.Id,
+                    Price = x.Price
+                }).ToList());
+            respons.AddRange(db.Tags
+                .Where(t => t.tag.Contains(searchString))
+                .Select(x => new ProductViewModel()
+                {
+                    ImageAddress = x.Product.PictureAddress,
+                    Id = x.Product.Id,
+                    Price = x.Product.Price,
+                    Title = x.Product.Title
+                }).ToList());
+            return respons.Where(x => x.Id > 0).ToList();
+        }
+
     }
 }

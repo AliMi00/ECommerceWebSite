@@ -14,7 +14,8 @@ using ECommerceWebSite.Services;
 
 namespace ECommerceWebSite.Controllers.Admin
 {
-    [Authorize(Roles ="Admin")]
+    [Authorize(Roles = "Admin")]
+    [Route("/Admin/{controller}/{action=Index}/{id?}")]
     public class AdminProductsController : Controller
     {
         private readonly ApplicationDbContext _context;
