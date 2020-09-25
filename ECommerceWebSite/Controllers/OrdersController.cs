@@ -16,16 +16,19 @@ namespace ECommerceWebSite.Controllers
     {
         private readonly IOrderServices orderServices;
         private readonly IProductServices productServices;
+        private readonly ICartServices cartServices;
+
 
         string UserName
         {
             get { return User.FindFirstValue(ClaimTypes.Name); }
         }
 
-        public OrdersController(IOrderServices orderServices,IProductServices productServices)
+        public OrdersController(IOrderServices orderServices,IProductServices productServices,ICartServices cartServices)
         {
             this.orderServices = orderServices;
             this.productServices = productServices;
+            this.cartServices = cartServices;
         }
         public IActionResult Index()
         {
@@ -67,47 +70,54 @@ namespace ECommerceWebSite.Controllers
             return View(viewModel);
         }
 
-        
-        public IActionResult AddToOrder()
-        {
-            int count = orderServices.AddProductToCart(UserName);
-
-            var order = orderServices.GetOrder(UserName);
-
-            OrderViewModel model;
-            if (order != null)
-            {
-                model = orderServices.GetOrderDetails(order.Id, UserName);
-            }
-            else
-            {
-                model = new OrderViewModel()
-                {
-                    Details = new List<OrderDetailViewModel>(),
-                    TotalPrice = 0
-                };
-            }
-            
-
-            return View(model);
-        }
-
-        //
+        //validate cart in case of invalid return to check cart again or pay
+        //in case of error make order cancel 
         public async Task<IActionResult> CheckOut()
         {
-            
-            
+            int initCount = cartServices.GetCartList(UserName).Count;
+            int resCount = orderServices.ValidatingCartBeforAddingToCart(UserName);
+
+            if (initCount != resCount)
+            {
+                return RedirectToAction(nameof(Index), "Cart");
+            }
+
+            var order = orderServices.GetOrder(UserName);
+            int count = orderServices.AddProductToCart(UserName);
+         
 
             var totalPrice = orderServices.GetOrder(UserName)?.AmountBuy;
 
             if (!totalPrice.HasValue)
                 return View("Error");
+            if(initCount != orderServices.GetOrder(UserName, null,true).OrderDetails.Count)
+            {
+                if (orderServices.CancelingOpenOrder(UserName))
+                {
+                    return View("Error", new ErrorViewModel() { RequestId = "Something wrong" });
+                }
+
+                return View("Error");
+            }
 
             var payment = await new Payment(totalPrice.Value)
                 .PaymentRequest("متن تست موقع خرید",
                     Url.Action(nameof(CheckOutCallback), "Orders", new { amount = totalPrice }, Request.Scheme));
 
-            return payment.Status == 100 ? (orderServices.AddAuthorityToOrder(UserName, payment.Authority) ? (IActionResult)Redirect(payment.Link) : BadRequest("خطا در پرداخت")) : BadRequest($"خطا در پرداخت. کد خطا:{payment.Status}");
+            if(payment.Status == 100)
+            {
+                if (orderServices.AddAuthorityToOrder(UserName, payment.Authority))
+                {
+                     return (IActionResult)Redirect(payment.Link);
+                }
+                orderServices.CancelingOpenOrder(UserName);
+                return BadRequest("خطا در پرداخت");
+            }
+            else
+            {
+                orderServices.CancelingOpenOrder(UserName);
+                return BadRequest($"خطا در پرداخت. کد خطا:{payment.Status}");
+            }
         }
         public async Task<IActionResult> CheckOutCallback(int amount, string Authority, string Status)
         {
@@ -119,6 +129,7 @@ namespace ECommerceWebSite.Controllers
             if (verification.Status != 100 || !orderServices.PayForOrder(amount, UserName))
             {
                 response = View("Error");
+                orderServices.CancelingOpenOrder(UserName);
             }
             else
             {
@@ -126,5 +137,31 @@ namespace ECommerceWebSite.Controllers
             }
             return response;
         }
+        public async Task<IActionResult> CheckAgainOut(int id)
+        {
+            var totalPrice = orderServices.GetOrder(UserName,id)?.AmountBuy;
+
+            if (!totalPrice.HasValue)
+                return View("Error");
+
+            var payment = await new Payment(totalPrice.Value)
+                .PaymentRequest("متن تست موقع خرید",
+                    Url.Action(nameof(CheckOutCallback), "Orders", new { amount = totalPrice }, Request.Scheme));
+
+            if (payment.Status == 100)
+            {
+                if (orderServices.AddAuthorityToOrder(UserName, payment.Authority))
+                {
+                    return (IActionResult)Redirect(payment.Link);
+                }
+                return BadRequest("خطا در پرداخت");
+            }
+            else
+            {
+                orderServices.CancelingOpenOrder(UserName);
+                return BadRequest($"خطا در پرداخت. کد خطا:{payment.Status}");
+            }
+        }
+
     }
 }

@@ -14,51 +14,65 @@
 
 
 <table class="table table-striped">
-    <tr>
-        <th>
-            <label asp-for="CartItems.FirstOrDefault().Title" class="control-label"></label>
-        </th>
-        <th>
-            <label asp-for="CartItems.FirstOrDefault().Price" class="control-label"></label>
-        </th>
-    </tr>
+    <thead>
+        <tr>
+            <th scope="col">
+                <label class="control-label">Picture</label>
+            </th>
+            <th scope="col">
+                <label asp-for="CartItems.FirstOrDefault().Title" class="control-label"></label>
+            </th>
+            <th scope="col">
+                <label asp-for="CartItems.FirstOrDefault().Price" class="control-label"></label>
+            </th>
+            <th scope="col">
+                <label asp-for="CartItems.FirstOrDefault().Quantity" class="control-label"></label>
+            </th>
+            <th scope="col">
+                <label class="control-label">Delete</label>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.CartItems)
+        {
+            <tr>
+                <td scope="row">
+                    <img alt="picture" class="img-thumbnail w-25" src="~/images/@item.ImageAddress" />
+                </td>
+                <td>
+                    <label class="control-label">@item.Title</label>
+                </td>
+                <td>
+                    <label class="control-label">@item.Price</label>
+                </td>
+                <td>
+                    <label class="control-label">@item.Quantity</label>
+                </td>
+                <td>
+                    <a asp-action="DeleteCartItem" asp-route-id="@item.Id" class="btn btn-danger"> Delete this item</a>
+                </td>
+            </tr>
+        }
 
-    @foreach (var item in Model.CartItems)
-    {
         <tr>
             <td>
-                <img alt="picture" class="img-thumbnail w-50" src="~/images/@item.ImageAddress" />
+                <label asp-for="TotalPrice" class="control-label"></label>
             </td>
             <td>
-                <label class="control-label">@item.Title</label>
-            </td>
-            <td>
-                <label class="control-label">@item.Price</label>
-            </td>
-            <td>
-                <label class="control-label">@item.Quantity</label>
-            </td>
-            <td>
-                <a asp-action="DeleteCartItem" asp-route-id="@item.Id"  class="btn btn-danger"> Delete this item</a>
+                <label class="control-label">@Model.TotalPrice</label>
             </td>
         </tr>
-    }
+    </tbody>
 
-    <tr>
-        <td>
-            <label asp-for="TotalPrice" class="control-label"></label>
-        </td>
-        <td>
-            <label class="control-label">@Model.TotalPrice</label>
-        </td>
-    </tr>
 
 </table>
+
 @if (Model.CartItems.Count > 0)
 {
-    <a asp-controller="Orders" asp-action="AddToOrder" class="btn btn-success">خرید خود را نهایی کنید </a>
+    <a asp-controller="Orders" asp-action="CheckOut" class="btn btn-success">پرداخت</a>
 }
 @if (Model.CartItems.Count <= 0)
 {
-    <button class="btn btn-light" disabled>خرید خود را نهایی کنید  </button>
+    <button class="btn btn-light" disabled>پرداخت</button>
 }

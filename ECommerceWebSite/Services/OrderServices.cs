@@ -301,8 +301,73 @@ namespace ECommerceWebSite.Services
             db.SaveChanges();
             return respose.Count(x => x.Succeed);
         }
+        //validate otem of cart and return valid cart item count
+        public int ValidatingCartBeforAddingToCart(string UserName)
+        {
+            Customer customer = GetCustomer(UserName);
 
-        
+            if (customer == null)
+                return 0;
+            List<CartItem> cartItems = cartServices.GetCartList(customer.UserName);
+            List<ProductAddToOrderViewModel> respose = new List<ProductAddToOrderViewModel>();
+            foreach (CartItem item in cartItems)
+            {
+                ProductAddToOrderViewModel res = ValidateCartItem(item.Customer.UserName, item.Product.Id, item.Quantity);
+                if(res.Succeed == false)
+                {
+                    db.CartItems.Where(x => x.Id == item.Id).SingleOrDefault().RemoveDate = DateTime.Now;
+                }
+                respose.Add(res);
+            }
+
+            db.SaveChanges();
+            return respose.Count(x => x.Succeed);
+        }
+        private ProductAddToOrderViewModel ValidateCartItem(string Username, int productId, int quantity = 1)
+        {
+            var responseModel = new ProductAddToOrderViewModel();
+
+            var customer = this.GetCustomer(Username);
+            var product = this.GetProduct(productId);
+            if (product == null)
+            {
+                responseModel.Message = "product Invalid";
+                responseModel.Succeed = false;
+
+                return responseModel;
+            }
+            if (product.Quantity <= quantity)
+            {
+                responseModel.Message = "Product is not available";
+                responseModel.Succeed = false;
+
+                return responseModel;
+            }
+
+            responseModel.Message = "item is Valid";
+            responseModel.Succeed = true;
+
+            return responseModel;
+        }
+        //canceling order use for errors
+        public bool CancelingOpenOrder(string userName)
+        {
+            Order order = GetOrder(userName);
+            order.OrderStatus = OrderStatusTypes.Canseled;
+            try
+            {
+                db.Orders.Update(order);
+                db.SaveChanges();
+            }
+            catch
+            {
+                return false;
+            }
+            return true;
+        }
+
+
+
 
     }
 }

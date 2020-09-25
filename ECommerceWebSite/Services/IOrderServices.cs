@@ -20,5 +20,7 @@ namespace ECommerceWebSite.Services
         int ValidateOrders();
         bool PayForOrder(int amount, string userName);
         public int AddProductToCart(string UserName);
+        int ValidatingCartBeforAddingToCart(string UserName);
+        bool CancelingOpenOrder(string userName);
     }
 }

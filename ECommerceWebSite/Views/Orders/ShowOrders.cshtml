@@ -19,6 +19,9 @@
         <th>
             <label asp-for="First().Status" class="control-label"></label>
         </th>
+        <th>
+            <label asp-for="First().Status" class="control-label"></label>
+        </th>
     </tr>
 
     @foreach (var item in Model)
@@ -35,6 +38,16 @@
             </td>
             <td>
                 <label class="control-label">@item.Status</label>
+            </td>
+            <td>
+                @if (item.Status == "Open")
+                {
+                    <a class="btn btn-success" asp-action="CheckAgainOut" asp-route-id="@item.Id">پرداخت مجدد  </a>
+                }
+                else
+                {
+                    <a asp-action="CheckAgainOut" asp-route-id="@item.Id" disabled> </a>
+                }
             </td>
         </tr>
     }

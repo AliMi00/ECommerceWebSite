@@ -360,7 +360,7 @@ namespace ECommerceWebSite.Services
             }
             if (!endDate.HasValue)
             {
-                endDate = DateTime.Today;
+                endDate = DateTime.Now;
             }
 
             var orders = db.Orders.Where(x => x.OrderDate >= startDate &&
