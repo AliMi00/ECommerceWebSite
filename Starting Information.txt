@@ -1,0 +1,16 @@
+﻿Some Stating information
+
+
+use Kestrel on  port 12000 Under https protocol by default
+
+
+There is seeded User with admin role with Email of : admin@a.com and password of : 123456
+
+
+This data can be change at data folder on seedData.cs 
+
+
+Admin panel is under /admin
+
+
+For seeding dummy data after creating database can use  home/seeddb  with admin user access

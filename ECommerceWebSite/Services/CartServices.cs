@@ -186,5 +186,18 @@ namespace ECommerceWebSite.Services
             return respons;
 
         }
+
+        public bool CleanUpTempCart()
+        {
+            try
+            {
+                db.TempCartItems.RemoveRange(db.TempCartItems.Where(x => x.AddedTime < DateTime.Today.AddDays(-8)));
+            }
+            catch
+            {
+                return false;
+            }
+            return true;
+        }
     }
 }
