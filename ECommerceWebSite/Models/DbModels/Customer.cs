@@ -9,6 +9,9 @@ namespace ECommerceWebSite.Models.DbModels
 {
     public class Customer : IdentityUser
     {
+        public string Name { get; set; }
+        public string FamilyName { get; set; }
+
         public string PostCode { get; set; }
         public string Address { get; set; }
 

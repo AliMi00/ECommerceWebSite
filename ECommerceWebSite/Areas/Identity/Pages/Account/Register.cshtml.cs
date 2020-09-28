@@ -66,6 +66,12 @@ namespace ECommerceWebSite.Areas.Identity.Pages.Account
             public string PostCode { get; set; }
             [Required]
             public string Address { get; set; }
+            [Required]
+            public string Name { get; set; }
+            [Required]
+            public string FamilyName { get; set; }
+            [Required]
+            public string Phone { get; set; }
 
         }
 
@@ -81,7 +87,7 @@ namespace ECommerceWebSite.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new Customer { UserName = Input.Email, Email = Input.Email , PostCode = Input.PostCode,Address = Input.Address};
+                var user = new Customer { UserName = Input.Email, Email = Input.Email , PostCode = Input.PostCode,Address = Input.Address,Name = Input.Name,FamilyName = Input.FamilyName,PhoneNumber = Input.Phone};
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {

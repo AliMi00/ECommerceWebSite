@@ -13,22 +13,22 @@
 }
 
 
-<table class="table table-striped">
+<table class="table table-responsive-sm">
     <thead>
-        <tr>
-            <th scope="col">
+        <tr class="d-flex" >
+            <th scope="col" class="col-lg-4">
                 <label class="control-label">Picture</label>
             </th>
-            <th scope="col">
+            <th scope="col" class="col-2">
                 <label asp-for="CartItems.FirstOrDefault().Title" class="control-label"></label>
             </th>
-            <th scope="col">
+            <th scope="col" class="col-2">
                 <label asp-for="CartItems.FirstOrDefault().Price" class="control-label"></label>
             </th>
-            <th scope="col">
+            <th scope="col" class="col-1">
                 <label asp-for="CartItems.FirstOrDefault().Quantity" class="control-label"></label>
             </th>
-            <th scope="col">
+            <th scope="col" class="col-3">
                 <label class="control-label">Delete</label>
             </th>
         </tr>
@@ -36,20 +36,20 @@
     <tbody>
         @foreach (var item in Model.CartItems)
         {
-            <tr>
-                <td scope="row">
-                    <img alt="picture" class="img-thumbnail w-25" src="~/images/@item.ImageAddress" />
+            <tr class="d-flex">
+                <td scope="row" class="col-lg-4">
+                    <img alt="picture" class="img-thumbnail w-50" src="~/images/@item.ImageAddress" />
                 </td>
-                <td>
+                <td class="col-2">
                     <label class="control-label">@item.Title</label>
                 </td>
-                <td>
+                <td class="col-2">
                     <label class="control-label">@item.Price</label>
                 </td>
-                <td>
+                <td class="col-1">
                     <label class="control-label">@item.Quantity</label>
                 </td>
-                <td>
+                <td class="col-3">
                     <a asp-action="DeleteCartItem" asp-route-id="@item.Id" class="btn btn-danger"> Delete this item</a>
                 </td>
             </tr>
