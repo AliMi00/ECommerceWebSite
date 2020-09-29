@@ -12,16 +12,19 @@ namespace ECommerceWebSite.Services
     public class CartServices : ICartServices
     {
         private readonly IApplicationDbContext db;
-        public CartServices(IApplicationDbContext db)
+        private readonly IOrderServices orderServices;
+        public CartServices(IApplicationDbContext db,IOrderServices orderServices)
         {
             this.db = db;
+            this.orderServices = orderServices;
         }
 
         //add product to cart with quantity it check if exist increase the quantity 
-        public ProductAddToOrderViewModel addToCart(string Username, int productId, int quantity = 1)
+        public ProductAddToOrderViewModel addToCart(string userName, int productId, int quantity = 1)
         {
+            var customer = this.GetCustomer(userName);          
+
             ProductAddToOrderViewModel respons = new ProductAddToOrderViewModel();
-            var customer = this.GetCustomer(Username);
             var product = this.GetProduct(productId);
             if (customer == null)
             {
@@ -186,7 +189,7 @@ namespace ECommerceWebSite.Services
             return respons;
 
         }
-
+        //for hosted service to delete old temp cart
         public bool CleanUpTempCart()
         {
             try
@@ -198,6 +201,22 @@ namespace ECommerceWebSite.Services
                 return false;
             }
             return true;
+        }
+
+        //return orderDetails to cart 
+        public void AddOrderDetailsToCart(string userName)
+        {
+            var order = orderServices.GetOrder(userName, null, true);
+            if (order != null)
+            {
+                var orderDetails = order.OrderDetails.ToList();
+
+                foreach (OrderDetail od in orderDetails)
+                {
+                    addToCart(userName, od.Product.Id, od.Quantity);
+                }
+                orderServices.CancelingOpenOrder(userName);
+            }
         }
     }
 }

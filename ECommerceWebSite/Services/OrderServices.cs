@@ -12,11 +12,9 @@ namespace ECommerceWebSite.Services
     public class OrderServices:IOrderServices
     {
         private readonly IApplicationDbContext db;
-        private readonly ICartServices cartServices;
-        public OrderServices(IApplicationDbContext db,ICartServices cartServices)
+        public OrderServices(IApplicationDbContext db )
         {
             this.db = db;
-            this.cartServices = cartServices;
         }
 
 
@@ -259,7 +257,7 @@ namespace ECommerceWebSite.Services
 
             if (customer == null)
                 return 0;
-            List<CartItem> cartItems = cartServices.GetCartList(customer.UserName);
+            List<CartItem> cartItems = GetCartList(customer.UserName);
             List<ProductAddToOrderViewModel> respose = new List<ProductAddToOrderViewModel>();
             foreach(CartItem item in cartItems)
             {
@@ -279,7 +277,7 @@ namespace ECommerceWebSite.Services
 
             if (customer == null)
                 return 0;
-            List<CartItem> cartItems = cartServices.GetCartList(customer.UserName);
+            List<CartItem> cartItems = GetCartList(customer.UserName);
             List<ProductAddToOrderViewModel> respose = new List<ProductAddToOrderViewModel>();
             foreach (CartItem item in cartItems)
             {
@@ -323,8 +321,23 @@ namespace ECommerceWebSite.Services
         //canceling order use for errors
         public bool CancelingOpenOrder(string userName)
         {
-            Order order = GetOrder(userName);
+            Order order = GetOrder(userName,null,true);
             order.OrderStatus = OrderStatusTypes.Canseled;
+                        
+
+            foreach (OrderDetail od in order.OrderDetails)
+            {
+                var pro = od.Product;
+                pro.Quantity += od.Quantity;
+                try
+                {
+                    db.Products.Update(pro);
+                }
+                catch
+                {
+                    return false;
+                }
+            }
             try
             {
                 db.Orders.Update(order);
@@ -335,6 +348,28 @@ namespace ECommerceWebSite.Services
                 return false;
             }
             return true;
+        }
+
+        // return list of itme in cart and totla price of the user 
+        public List<CartItem> GetCartList(string userName)
+        {
+            List<CartItem> cartItems;
+            Customer customer = this.GetCustomer(userName);
+            if (customer == null)
+            {
+                return cartItems = new List<CartItem>();
+            }
+            else
+            {
+                cartItems = db.CartItems.Where(c => c.Customer == customer &&
+                             !c.DeletedDate.HasValue &&
+                             !c.RemoveDate.HasValue &&
+                             !c.Product.DisableDate.HasValue &&
+                             !c.Product.RemoveDate.HasValue).Include(x => x.Product).ToList();
+
+                return cartItems;
+            }
+
         }
 
 

@@ -17,5 +17,6 @@ namespace ECommerceWebSite.Services
         Task DeleteTempCart(string tempCartId);
         Task<ResponsViewModel> DeleteCartItem(int ItemId);
         bool CleanUpTempCart();
+        void AddOrderDetailsToCart(string userName);
     }
 }

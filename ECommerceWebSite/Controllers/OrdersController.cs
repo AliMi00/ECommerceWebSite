@@ -120,7 +120,11 @@ namespace ECommerceWebSite.Controllers
         }
         public async Task<IActionResult> CheckOutCallback(int amount, string Authority, string Status)
         {
-            if (Status == "NOK") return View("Error", new ErrorViewModel() { RequestId = "khkhkhkhkh" });
+            if (Status == "NOK")
+            {
+                cartServices.AddOrderDetailsToCart(UserName);
+                return View("Error", new ErrorViewModel() { RequestId = "khkhkhkhkh" });
+            }
             var verification = await new Payment(amount)
                 .Verification(Authority);
 
