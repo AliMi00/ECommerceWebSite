@@ -18,7 +18,7 @@ namespace ECommerceWebSite.Services
         }
         
         // get all the available products by category filter2
-        public List<ProductViewModel> GetProducts(int categoryId, bool deleted = false)
+        public IQueryable<ProductViewModel> GetProducts(int categoryId, bool deleted = false)
         {
             return db.Products
                 .Where(p => !p.RemoveDate.HasValue &&
@@ -38,9 +38,9 @@ namespace ECommerceWebSite.Services
                     Title = x.Title,
                     Id = x.Id,
                     Price = x.Price
-                }).ToList();
+                });
         }
-        public List<ProductViewModel> GetProducts(bool deleted = false)
+        public IQueryable<ProductViewModel> GetProducts(bool deleted = false)
         {
             return db.Products
                 .Where(p => !p.RemoveDate.HasValue &&
@@ -53,10 +53,10 @@ namespace ECommerceWebSite.Services
                     Title = x.Title,
                     Id = x.Id,
                     Price = x.Price
-                }).ToList();
+                });
         }
         //use when we need to access with category name 
-        public List<ProductViewModel> GetProducts(string categoryName, bool deleted)
+        public IQueryable<ProductViewModel> GetProducts(string categoryName, bool deleted)
         {
             return GetProducts(GetCategoryId(categoryName), deleted);
         }
@@ -91,11 +91,9 @@ namespace ECommerceWebSite.Services
 
             return respos;
         }
-        public List<ProductViewModel> GetSearchedProducts(string searchString, bool deleted = false)
+        public IQueryable<ProductViewModel> GetSearchedProducts(string searchString, bool deleted = false)
         {
-            List<ProductViewModel> respons = new List<ProductViewModel>();
-
-            respons.AddRange(db.Products
+           var respons = db.Products
                 .Where(p => !p.RemoveDate.HasValue &&
                             !p.DisableDate.HasValue &&
                             p.Quantity > 0 &&
@@ -106,8 +104,8 @@ namespace ECommerceWebSite.Services
                     Title = x.Title,
                     Id = x.Id,
                     Price = x.Price
-                }).ToList());
-            respons.AddRange(db.Tags
+                });
+            respons.Union( db.Tags
                 .Where(t => t.tag.Contains(searchString))
                 .Select(x => new ProductViewModel()
                 {
@@ -115,8 +113,8 @@ namespace ECommerceWebSite.Services
                     Id = x.Product.Id,
                     Price = x.Product.Price,
                     Title = x.Product.Title
-                }).ToList());
-            return respons.Where(x => x.Id > 0).ToList();
+                }));
+            return respons;
         }
 
     }

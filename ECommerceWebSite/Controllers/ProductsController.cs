@@ -30,16 +30,21 @@ namespace ECommerceWebSite.Controllers
         }
 
         //return all products
-        public IActionResult Index()
+        public async Task<IActionResult> Index(int? page)
         {
             var products =  productServices.GetProducts();
-            return View("CategoryFilter",products);
+            int pageSize = 12;
+            return View(nameof(CategoryFilter),await PaginatedList<ProductViewModel>.CreateAsync(products.AsQueryable(), page ?? 1, pageSize));
+
+
+            //return View("CategoryFilter",products);
         }
         //return category product 
-        public IActionResult CategoryFilter(int categoryId)
+        public async Task<IActionResult> CategoryFilter(int categoryId,int? page)
         {
             var products =  productServices.GetProducts(categoryId);
-            return View(products);
+            int pageSize = 12;
+            return View(nameof(CategoryFilter), await PaginatedList<ProductViewModel>.CreateAsync(products.AsQueryable(), page ?? 1, pageSize));
         }
 
         //add product to cart 
@@ -162,10 +167,11 @@ namespace ECommerceWebSite.Controllers
 
             return View(respons);
         }
-        public IActionResult Search(string searchProduct)
+        public async Task<IActionResult> Search(string searchProduct,int? page)
         {
-            
-            return View(nameof(CategoryFilter), productServices.GetSearchedProducts(searchProduct));
+            var products = productServices.GetSearchedProducts(searchProduct);
+            int pageSize = 12;
+            return View(nameof(CategoryFilter), await PaginatedList<ProductViewModel>.CreateAsync(products, page ?? 1, pageSize));
         }
     }
 }

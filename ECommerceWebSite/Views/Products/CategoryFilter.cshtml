@@ -1,32 +1,49 @@
-﻿@model List<ECommerceWebSite.Models.ViewModels.ProductViewModel>
-    <script>
+﻿@using ECommerceWebSite.Controllers
+@model PaginatedList<ECommerceWebSite.Models.ViewModels.ProductViewModel>
+
+<script>
     window.onload = QueryOrder;
-    </script>
+</script>
 
-    <div class="row text-center">
-        <div class="col-sm-12">
-            <h1>محصولات این دسته</h1>
-        </div>
-        @foreach (var item in Model)
-        {
-            <div class="col-sm-4 pb-4 text-center bg-light overflow-hidden">
-                <a asp-action="Detail" asp-route-id="@item.Id">
-                    <img src="~/images/@item.ImageAddress" class="img-thumbnail w-50" />
-                </a>
-
-                <h2>@item.Title</h2>
-                <p class="form-group">قیمت محصول: @item.Price</p>
-                <a asp-action="Detail" asp-route-id="@item.Id" class="btn btn-outline-success">مشخصات بیشتر...</a>
-                <button onclick="AddToCard(@item.Id)" class="btn btn-success btn-block btn-lg m-2">اضافه به سبد خرید</button>
-            </div>
-
-        }
-
-
-
-        <div class="col-sm-12">
-            <a asp-action="Index" asp-controller="Home" class="btn btn-outline-dark mb-2 mt-5">بازگشت به منوی دسته‌بندی‌ها</a>
-        </div>
-
-
+<div class="row text-center">
+    <div class="col-sm-12">
+        <h1>محصولات این دسته</h1>
     </div>
+    @foreach (var item in Model)
+    {
+        <div class="col-sm-4 pb-4 text-center bg-light overflow-hidden">
+            <a asp-action="Detail" asp-route-id="@item.Id">
+                <img src="~/images/@item.ImageAddress" class="img-thumbnail w-50" />
+            </a>
+
+            <h2>@item.Title</h2>
+            <p class="form-group">قیمت محصول: @item.Price</p>
+            <a asp-action="Detail" asp-route-id="@item.Id" class="btn btn-outline-success">مشخصات بیشتر...</a>
+            <button onclick="AddToCard(@item.Id)" class="btn btn-success btn-block btn-lg m-2">اضافه به سبد خرید</button>
+        </div>
+
+    }
+
+    <br />
+    @{
+        var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+        var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+    }
+
+    <a asp-action="Index"
+       asp-route-page="@(Model.PageIndex - 1)"
+       class="btn btn-default @prevDisabled">
+        Previous
+    </a>
+    <a asp-action="Index"
+       asp-route-page="@(Model.PageIndex + 1)"
+       class="btn btn-default @nextDisabled">
+        Next
+    </a>
+
+    <div class="col-sm-12">
+        <a asp-action="Index" asp-controller="Home" class="btn btn-outline-dark mb-2 mt-5">بازگشت به منوی دسته‌بندی‌ها</a>
+    </div>
+
+
+</div>
