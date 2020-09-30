@@ -3,19 +3,22 @@
     ViewData["Title"] = "Home Page";
 }
 
-    <div class="row text-center">
-        <div class="col-sm-12">
-            <h1>@Model.PageTitle</h1>
-        </div>
-        @foreach (var item in Model.categoryViewModels)
-        {
-            <div class="col-sm-6 pb-2">
-                <a asp-action="CategoryFilter" asp-controller="Products" asp-route-CategoryId="@item.Id">
-                    <img src="~/images/@item.ImageAddress" class="img-thumbnail w-100" />
-                </a>
-                <h2>@item.Title</h2>
-                <p class="form-group">تعداد این دسته : @item.ProductCount</p>
-                <a asp-action="CategoryFilter" asp-controller="Products" asp-route-CategoryId="@item.Id" class="btn btn-info">مشاهده محصولات</a>
+    <div class="container">
+        <div class=" pb-3 row text-center">
+            <div class="col-sm-12">
+                <h1>@Model.PageTitle</h1>
             </div>
-        }
+            @foreach (var item in Model.categoryViewModels)
+            {
+                <div class="col-sm-6 pb-2">
+                    <a asp-action="CategoryFilter" asp-controller="Products" asp-route-CategoryId="@item.Id">
+                        <img src="~/images/@item.ImageAddress" class="img-thumbnail w-100" />
+                    </a>
+                    <h2>@item.Title</h2>
+                    <p class="form-group">تعداد این دسته : @item.ProductCount</p>
+                    <a asp-action="CategoryFilter" asp-controller="Products" asp-route-CategoryId="@item.Id" class="btn btn-info">مشاهده محصولات</a>
+                </div>
+            }
+        </div>
     </div>
+
