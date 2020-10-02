@@ -19,7 +19,7 @@
             <h2>@item.Title</h2>
             <p class="form-group">قیمت محصول: @item.Price</p>
             <a style="width:50%;" asp-action="Detail" asp-route-id="@item.Id" class="btn btn-outline-success m-2">مشخصات بیشتر...</a>
-            <button style="width:60%;" onclick="AddToCard(@item.Id)" class="btn btn-success  m-2">اضافه به سبد خرید</button>
+            <button style="width:60%;" onclick="AddToCard(@item.Id)" class="btn btn-primary  m-2">اضافه به سبد خرید</button>
         </div>
 
     }
