@@ -3,32 +3,39 @@
 @inject SignInManager<Customer> SignInManager
 @inject UserManager<Customer> UserManager
 
-<ul class="navbar-nav">
-    <li>
-        <form asp-controller="Products" asp-action="Search" method="get" class="form-inline">
-            <input class="form-control mr-sm-2" type="search" name="searchProduct" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-        </form>
-    </li>
-    @if (SignInManager.IsSignedIn(User))
-    {
-        <li class="nav-item">
-            <a class="nav-link text-light" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity.Name!</a>
-        </li>
-        <li class="nav-item">
-            <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                <button type="submit" class="nav-link btn btn-link text-light">Logout</button>
-            </form>
-        </li>
-    }
-    else
-    {
-        <li class="nav-item">
-            <a class="nav-link text-light" asp-area="Identity" asp-page="/Account/Register">Register</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link text-light" asp-area="Identity" asp-page="/Account/Login">Login</a>
-        </li>
-    }
 
-</ul>
+@if (SignInManager.IsSignedIn(User))
+{
+
+    <a class="header__link" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">
+
+        <div class="header__option">
+            <span class="header__optionLineOne"> سلام @User.Identity.Name </span>
+            <span class="header__optionLineTwo"> خوش آمدید  </span>
+        </div>
+
+    </a>
+
+    <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+        <button class="header__logoutBtn" type="submit">
+            <div class="header__option">
+                <span class="header__optionLineOne"> خارج شوید </span>
+                <span class="header__optionLineTwo"> Logout  </span>
+            </div>
+        </button>
+    </form>
+
+
+}
+else
+{
+    <a class="header__link" asp-area="Identity" asp-page="/Account/Login">
+
+        <div class="header__option">
+            <span class="header__optionLineOne"> سلام  </span>
+            <span class="header__optionLineTwo"> خوش آمدید  </span>
+        </div>
+
+    </a>
+}
+

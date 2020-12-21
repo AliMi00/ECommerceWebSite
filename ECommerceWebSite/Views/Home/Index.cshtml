@@ -3,19 +3,66 @@
     ViewData["Title"] = "Home Page";
 }
 
-    <div class=" d-flex justify-content-center">
-        <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
-            <div class="carousel-inner ">
-                <div class="carousel-item active">
-                    <img class="d-block w-100 " src="~/images/bg-1.jpg" alt="First slide">
-                </div>
+
+<div class="pl-lg-5 pr-lg-5 d-flex justify-content-center">
+
+    <div id="carouselExampleIndicators" class="carousel top-carousel slide w-75 h-75" data-ride="carousel">
+        <ol class="carousel-indicators">
+            <li data-target="#carouselExampleIndicators" data-slide-to="0" class=""></li>
+            <li data-target="#carouselExampleIndicators" data-slide-to="1" class=""></li>
+        </ol>
+        <div class="carousel-inner">
+            <div class="carousel-item active right-caption dark-caption">
+                <a href="#" class="item-link">
+                    <div class="item-overlay"></div>
+                    <img class="d-block w-100" src="~/img/bg-img/bg1.jpg" alt="با شما در بلندترین شب سال!">
+                    <div class="carousel-caption">
+                        <div class="container">
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="carousel-item right-caption dark-caption">
+                <a href="#" class="item-link dana-plus">
+                    <div class="item-overlay"></div>
+                    <img class="d-block w-100" src="~/img/bg-img/bg1.jpg" alt="تجربه نوین آموزش آنلاین در داناپلاس">
+                    <div class="carousel-caption">
+                        <div class="container">
+                           
+                        </div>
+                    </div>
+                </a>
             </div>
         </div>
     </div>
+    </div>
 
+    <!--custom build category part-->
+<div class="body__category__main mt-md-5">
+    <div class="body__category__title text-center">
+        <h2 class=" font-normal display-inline-block body__category__titleText">Shop by category</h2>
+    </div>
+    <div class="body__category__body">
+        <div class="body__category__items mt-md-5 d-flex justify-content-center">
+            <div class="row w-75">
+                @foreach (var item in Model.categoryViewModels)
+                {
+                    <div style="padding-top: 50px;" class=" col-sm-12 col-lg-3 col-3 text-center mt-md-5 ">
+                        <div class="mb-4">
+                            <a class="w-50 h-50" asp-action="CategoryFilter" asp-controller="Products" asp-route-CategoryId="@item.Id">
+                                <img src="~/images/@item.ImageAddress" class="img-thumbnail rounded-circle body__category__eachItem" />
+                            </a>
+                        </div>
+                        <a asp-action="CategoryFilter" asp-controller="Products" asp-route-CategoryId="@item.Id" class="text-dark">@item.Title</a>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
 
-    <div class="container">
-        <div class=" pb-3 row text-center">
+    @*<div class="container">
+        <div class=" pb-3 row text-center">     
             <div class="col-sm-12">
                 <h1>@Model.PageTitle</h1>
             </div>
@@ -31,5 +78,5 @@
                 </div>
             }
         </div>
-    </div>
+    </div>*@
 

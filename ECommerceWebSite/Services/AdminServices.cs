@@ -172,11 +172,11 @@ namespace ECommerceWebSite.Services
         {
             string uniqueFileName = null;
 
-            if (file != null)
+            if (file != null && file.ContentType == "image/jpeg")
             {
 
                 string uploadsFolder = Path.Combine(webHostEnvironment.WebRootPath, "images");
-                uniqueFileName = Guid.NewGuid().ToString() + "_" + file.ContentType;
+                uniqueFileName = Guid.NewGuid().ToString() + ".jpg";
                 string filePath = Path.Combine(uploadsFolder, uniqueFileName);
                 using (var fileStream = new FileStream(filePath, FileMode.Create))
                 {
@@ -237,8 +237,9 @@ namespace ECommerceWebSite.Services
                     string imageAddress = await UploadImage(file);
                     category.PictureAddress = imageAddress;
                 }
-                catch
+                catch(Exception e)
                 {
+                    Console.WriteLine(e);
                     respons.Message = "faild to upload image";
                     respons.Succeed = false;
                     return respons;

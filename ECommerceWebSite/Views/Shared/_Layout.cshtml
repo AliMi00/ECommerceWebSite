@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -6,6 +8,13 @@
     <title>@ViewData["Title"] - ECommerceWebSite</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/css/Footer.css" />
+    <link rel="stylesheet" href="~/css/Header.css" />
+    <link rel="stylesheet" href="~/css/body.css" />
+
+
+    <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
+
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
           rel="stylesheet">
 
@@ -63,68 +72,317 @@
 
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-            <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
-                <img src="~/images/icons/simcardIcon.jpg" width="30" height="30" class="d-inline-block align-top" alt="">
-                EcommerceWebSite
+
+    <header class="header__main">
+
+        <!-- first navbar-->
+        <nav class="myHeader fixed-top">
+
+            <a asp-area="" asp-controller="Home" asp-action="Index">
+                <img class="header__logo"
+                     src="~/images/icons/simcardIcon.jpg"
+                     alt="" />
             </a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
+
+
+            <form class="header__search" asp-controller="Products" asp-action="Search" method="get">
+                <div class="header__searchForm">
+                    <input class="header__searchInput" type="search" name="searchProduct" placeholder="Search" aria-label="Search">
+                    <button class="header__searchBtn" type="submit">
+                        <span class="material-icons header__searchIcon">
+                            search
+                        </span>
+                    </button>
+                </div>
+
+            </form>
+
+
+            <div class="header__nav">
+                <partial name="_LoginPartial" />
+                <a class="header__link" asp-area="" asp-controller="Orders" asp-action="ShowOrders">
+                    <div class="header__option">
+                        <span class="header__optionLineOne"> سفارشات  </span>
+                        <span class="header__optionLineTwo"> Orders  </span>
+                    </div>
+                </a>
+            </div>
+
+            <a href="/Cart">
+                <div class="header__optionBasket">
+                    <span class="material-icons">
+                        shopping_basket
+                    </span>
+                    <span class="header__optionLineTwo header__basketCount" id="price">0</span>
+                </div>
+
+            </a>
+        </nav>
+        <!-- second navbar-->
+        <nav class="  navbar-expand-lg header__categoryMain">
+            <button class="navbar-toggler header__toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="material-icons">
+                    menu
+                </span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarCollapse">
-                <ul class="navbar-nav mr-auto">
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class=" navbar-nav mr-auto">
                     <li class="nav-item active">
                         <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home <span class="sr-only">(current)</span></a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" asp-area="" asp-controller="Products" asp-action="Index">Products</a>
                     </li>
-                    <li class="nav-item">
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="dropdown05" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Categories</a>
-                        <div class="dropdown-menu" aria-labelledby="dropdown05">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Categories
+                        </a>
+                        <div class="dropdown-menu category__li" aria-labelledby="navbarDropdown">
                             <a class="dropdown-item" asp-action="CategoryFilter" asp-controller="Products" asp-route-CategoryId="1"> Smart Home</a>
                             <a class="dropdown-item" asp-action="CategoryFilter" asp-controller="Products" asp-route-CategoryId="2">Sport </a>
                             <a class="dropdown-item" asp-action="CategoryFilter" asp-controller="Products" asp-route-CategoryId="3"> Office</a>
                             <a class="dropdown-item" asp-action="CategoryFilter" asp-controller="Products" asp-route-CategoryId="4"> Digital</a>
                         </div>
                     </li>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" asp-area="" asp-controller="Orders" asp-action="ShowOrders">Orders</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/Cart">
-                            <span class="material-icons">
-                                shopping_basket
-                            </span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="/Cart" class="nav-link text-light">
-                            <span class="nav-item" id="price"></span>
-                        </a>
-                    </li>
                 </ul>
-                <partial name="_LoginPartial" />
             </div>
         </nav>
+
     </header>
+
+    <!-- main body -->
+
     <div class="container-fluid">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
 
+    <!--footer part 1-->
+    <footer id="footer_contact">
+
+        <div class="topFooter">
+
+            <div class="container">
+
+                <div class="row">
+                    <div class=" text-center col-xs-12 col-sm-6 col-md-4 col col1 ">
+                        <h3>خرید</h3>
+                        <div class="content">
+                            <ul>
+                                <li><a href="#">سیم‌کارت‌ها</a></li>
+                                <li><a href="#">مودم‌ها</a></li>
+                                <li><a href="#">گوشی‌ها</a></li>
+                                <li><a href="#">بسته‌ها</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="text-center col-xs-12 col-sm-6 col-md-4 col col2">
+
+                        <h3>پیشنهادها</h3>
+
+                        <div class="content">
+                            <ul>
+                                <li><a href="#">جشنواره ایرانسلی</a></li>
+                                <li><a href="#">طرح‌های تعرفه</a></li>
+                                <li><a href="#">مزایای ایرانسلی‌ها</a></li>
+                            </ul>
+                        </div>
+
+                    </div>
+
+                    <div class="text-center col-xs-12 col-sm-12 col-md-4 col col3">
+                        <h3>پشتیبانی</h3>
+
+                        <div class="content">
+                            <ul>
+                                <li><a href="https://eform.irancell.ir/Portal/home/?13945/ایرانسل-تماس-با-پشتیبانی-و-خدمات-مشترکین">تماس با ما</a></li>
+                                <li><a href="https://eform.irancell.ir/Portal/home/?146285/فهرست-برندگان">فهرست برندگان</a></li>
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+
+
+            <!--<div class="container">
+
+        <div class="row fixer">
+            <div class="col firstColInXS  col-xs-6 col-sm-4 col-md-2">
+                <h3>خرید</h3>
+                <div class="content">
+                    <ul>
+                        <li><a href="#">سیم‌کارت‌ها</a></li>
+                        <li><a href="#">مودم‌ها</a></li>
+                        <li><a href="#">گوشی‌ها</a></li>
+                        <li><a href="#">بسته‌ها</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="col  col-xs-6 col-sm-4 col-md-2">-->
+            @*<h3>خدمات</h3>
+
+        <div class="content">
+            <ul>
+                <li><a href="https://eform.irancell.ir/Portal/home/?155214/اینترنت-پرسرعت">اینترنت پرسرعت</a></li>
+                <li><a href="https://eform.irancell.ir/Portal/home/?11690/برنامه‌های-کاربردی">برنامه‌های کاربردی</a></li>
+                <li><a href="https://eform.irancell.ir/Portal/home/?240801/تماس-های-بین-المللی">رومینگ و تماس بین‌المللی</a></li>
+                <li><a href="https://eform.irancell.ir/Portal/home/?9254/پیام-پیشواز">پیام پیشواز</a></li>
+                <li><a href="https://eform.irancell.ir/Portal/home/?246534/آهنگ-پیشواز">آهنگ پیشواز</a></li>
+                <li><a href="https://eform.irancell.ir/Portal/home/?156603/کودکان-و-نوجوانان">کودکان و نوجوانان</a></li>
+            </ul>
+        </div>*@
+            <!--</div>
+
+    <div class="col firstColInXS col-xs-6 col-sm-4 col-md-2">
+        <h3>پیشنهادها</h3>
+
+        <div class="content">
+            <ul>
+                <li><a href="#">جشنواره ایرانسلی</a></li>
+                <li><a href="#">طرح‌های تعرفه</a></li>
+                <li><a href="#">مزایای ایرانسلی‌ها</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="col  col-xs-6 col-sm-4 col-md-2">-->
+            @*<h3>حساب من</h3>
+        <div class="content">
+            <ul>
+                <li><a href="https://eform.irancell.ir/Portal/home/?155832/مدیریت-حساب">مدیریت حساب</a></li>
+                <li><a href="https://eform.irancell.ir/Portal/home/?10170/-%D8%B1%D9%88%D8%B4%E2%80%8C%D9%87%D8%A7%DB%8C-%D8%B4%D8%A7%D8%B1%DA%98">شارژ سیم‌کارت اعتباری</a></li>
+                <li><a href="https://eform.irancell.ir/Portal/home/?10102/%D8%B1%D9%88%D8%B4-%D9%87%D8%A7%DB%8C-%D9%BE%D8%B1%D8%AF%D8%A7%D8%AE%D8%AA">پرداخت سیم‌کارت دائمی</a></li>
+            </ul>
+        </div>*@
+            <!--</div>
+
+    <div class="col firstColInXS col-xs-6 col-sm-4 col-md-2">
+        <h3>پشتیبانی</h3>
+
+        <div class="content">
+            <ul>
+                <li><a href="https://eform.irancell.ir/Portal/home/?13945/ایرانسل-تماس-با-پشتیبانی-و-خدمات-مشترکین">تماس با ما</a></li>
+                <li><a href="https://eform.irancell.ir/Portal/home/?146285/فهرست-برندگان">فهرست برندگان</a></li>
+
+            </ul>
+        </div>
+    </div>
+
+    <div class="col  col-xs-6 col-sm-4 col-md-2">-->
+            @*<h3>درباره ایرانسل</h3>
+
+        <div class="content">
+            <ul>
+                <li><a href="https://eform.irancell.ir/Portal/home/?21248/درباره-ایرانسل">معرفی ایرانسل</a></li>
+                <li><a href="https://eform.irancell.ir/Portal/Home/?news/26230/144984/اخبار">خبرها</a></li>
+                <li><a href="https://irancell.ir/Portal/home/?337638/%D9%88%D8%A8%D9%84%D8%A7%DA%AF-%D8%A7%DB%8C%D8%B1%D8%A7%D9%86%D8%B3%D9%84">بلاگ</a></li>
+                <li><a href="https://eform.irancell.ir/Portal/Home/?20259/فرصت-های-شغلی">فرصت‌های شغلی</a></li>
+                <li><a href="https://eform.irancell.ir/Portal/home/?20007/حمایتهای-مالی">رویدادها و حمایت‌های مالی</a></li>
+                <li><a href="http://irancell.ir/portal/home/?21496/%D8%A7%D8%B7%D9%84%D8%A7%D8%B9%DB%8C%D9%87-%D9%87%D8%A7">اطلاعیه‌ها و مناقصه‌ها</a></li>
+                <li><a href="https://www.cra.ir/">سازمان تنظیم مقررات</a></li>
+            </ul>
+        </div>*@
+            <!--</div>
+        </div>
+
+    </div>-->
+        </div>
+
+
+        <div class="middleFooter" style="">
+
+            <div class="container">
+
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-4 col col1 text-center">
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <h4>تماس با ما </h4>
+                                    </td>
+
+                                </tr>
+                                <tr>
+                                    <td>
+
+                                        <p> جدیدترین اخبار و پیشنهادهای تشویقی را در خبرنامه الکترونیک کسب‌وکار سازمانی دریافت کنید.</p>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+
+
+
+                    </div>
+
+                    <div class="col-xs-12 col-sm-6 col-md-4 col col2">
+
+                        
+
+                    </div>
+
+                    <div class="col-xs-12 col-sm-12 col-md-4 col col3">
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="socialBar">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-4 col col1">
+
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-4 col col2 text-center">
+                        <ul class="list-unstyled list-inline">
+
+                            <li class="twitter"><a href="https://twitter.com/irancell" rel="nofollow" target="_blank">.</a></li>
+                            <li class="linkedin"><a href="http://www.linkedin.com/company/mtnirancell" rel="nofollow" target="_blank">.</a></li>
+                            <li class="instagram"><a href="http://instagram.com/irancellmarkazi" rel="nofollow" target="_blank">.</a></li>
+                            <li class="aparat"><a href="http://aparat.com/irancell" rel="nofollow" target="_blank">.</a></li>
+                            <li class="robot"><a href="http://telegram.me/irancellbot" rel="nofollow" target="_blank">.</a></li>
+
+                        </ul>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-4 col col3">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </footer>
+
+
+    <!--footer part 2-->
     <footer class="border-top footer text-muted">
         <div class="container">
             &copy; 2020 - ECommerceWebSite - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
+
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/Footer.js" asp-append-version="true"></script>
+
     @RenderSection("Scripts", required: false)
 </body>
 </html>

@@ -68,6 +68,7 @@ namespace ECommerceWebSite.Areas.Identity.Pages.Account
             public string Address { get; set; }
             [Required]
             public string Name { get; set; }
+            [Display(Name = "Family")]
             [Required]
             public string FamilyName { get; set; }
             [Required]

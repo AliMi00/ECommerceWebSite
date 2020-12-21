@@ -1,0 +1,316 @@
+﻿footer {
+    margin-top: 80px;
+    direction:rtl;
+}
+
+    footer div.topFooter {
+        background-color: #e6e6e6;
+        padding-top: 30px;
+    }
+
+@media screen and (max-width: 768px) {
+    footer div.topFooter div.container div.firstColInXS {
+        padding-right: 30px;
+    }
+}
+
+footer div.topFooter div.container div.col {
+    min-height: 260px;
+}
+
+    footer div.topFooter div.container div.col h3 {
+        color: #373737;
+        font-size: 18px;
+        font-weight: 500;
+        margin-bottom: 40px;
+    }
+
+    footer div.topFooter div.container div.col .content ul {
+        list-style: none;
+        padding-right: 0;
+        padding-left: 0;
+    }
+
+        footer div.topFooter div.container div.col .content ul li a {
+            color: #989898;
+            line-height: 190%;
+        }
+
+footer div.middleFooter {
+    padding-top: 30px;
+    padding-bottom: 30px;
+}
+
+    footer div.middleFooter div.col1 h3 {
+        font-weight: 500;
+        color: #373737;
+        font-size: 18px;
+    }
+
+    footer div.middleFooter div.col1 table {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+        footer div.middleFooter div.col1 table tr td:last-child {
+            text-align: right;
+        }
+
+    footer div.middleFooter div.col1 a.btn-irancell {
+        font-size: 16px;
+        color: #373737;
+        background-color: #FFBE00;
+        height: 40px;
+        line-height: 40px;
+        font-weight: 500;
+        display: inline-block;
+        padding-right: 25px;
+        padding-left: 25px;
+    }
+
+    footer div.middleFooter div.col1 div.panel-group div.panel-heading {
+        background-color: #DCDCDC;
+    }
+
+        footer div.middleFooter div.col1 div.panel-group div.panel-heading a {
+            font-size: 14px;
+            color: #333;
+            display: block;
+            padding-top: 1px;
+            padding-bottom: 1px;
+        }
+
+            footer div.middleFooter div.col1 div.panel-group div.panel-heading a span.fa {
+                float: left;
+                font-size: 20px;
+            }
+
+            footer div.middleFooter div.col1 div.panel-group div.panel-heading a[aria-expanded=true] {
+                color: #989898;
+            }
+
+    footer div.middleFooter div.col1 div.panel-group div.panel {
+        border-radius: 0;
+        border: none;
+        box-shadow: none;
+    }
+
+    footer div.middleFooter div.col1 div.panel-group div.panel-heading {
+        border-radius: 0;
+    }
+
+        footer div.middleFooter div.col1 div.panel-group div.panel-heading a {
+            text-decoration: none;
+        }
+
+    footer div.middleFooter div.col1 div.panel-group div.panel-body {
+        background-color: #eeeff1;
+    }
+
+        footer div.middleFooter div.col1 div.panel-group div.panel-body a, footer div.middleFooter div.col1 div.panel-group div.panel-body p {
+            color: #7b7b7b;
+            font-size: 14px;
+            font-family: IRANSans-web;
+            line-height: 190%;
+            text-decoration: none;
+        }
+
+    footer div.middleFooter div.col2 h3 {
+        font-weight: 500;
+        color: #373737;
+        font-size: 18px;
+        margin-bottom: 30px;
+    }
+
+    footer div.middleFooter div.col2 p {
+        text-align: justify;
+        font-size: 14px;
+        line-height: 190%;
+        color: #7d7d7d;
+        font-weight: 400;
+    }
+
+    footer div.middleFooter div.col2 input {
+        background-color: #dcdcdc;
+        outline: 0;
+        height: 45px;
+        line-height: 45px;
+        border: none;
+        color: #4b4b4b;
+        margin-bottom: 20px;
+        box-shadow: none;
+        border-radius: 0;
+        margin-bottom: 3px;
+    }
+
+    footer div.middleFooter div.col2 span.text-danger {
+        color: #c8000a;
+        font-size: 12px;
+    }
+
+    footer div.middleFooter div.col2 button.btn-irancell {
+        font-size: 16px;
+        color: #373737;
+        background-color: #FFBE00;
+        height: 40px;
+        line-height: 40px;
+        font-weight: 500;
+        display: inline-block;
+        padding-right: 25px;
+        padding-left: 25px;
+        width: 100%;
+        margin-top: 25px;
+    }
+
+    footer div.middleFooter div.col3 {
+        padding-top: 110px;
+    }
+
+        footer div.middleFooter div.col3 div {
+            display: inline-block;
+            width: 48%;
+            text-align: center;
+        }
+
+footer div.socialBar {
+    background-color: white;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+    footer div.socialBar ul li {
+        display: inline-block;
+        margin: 0 3px;
+        width: 36px;
+        height: 36px;
+        background: url(https://shop.irancell.ir/static/v2/images/shared/footer/social-icon.png) no-repeat;
+        -webkit-transition: background .3s;
+        -moz-transition: background .3s;
+        -ms-transition: background .3s;
+        -o-transition: background .3s;
+        transition: background .3s;
+    }
+
+        footer div.socialBar ul li a {
+            font-size: 0;
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+
+        footer div.socialBar ul li.twitter {
+            background-position: -252px top;
+        }
+
+            footer div.socialBar ul li.twitter:hover {
+                background-position: -252px bottom;
+            }
+
+        footer div.socialBar ul li.linkedin {
+            background-position: -216px top;
+        }
+
+            footer div.socialBar ul li.linkedin:hover {
+                background-position: -216px bottom;
+            }
+
+        footer div.socialBar ul li.instagram {
+            background-position: -180px top;
+        }
+
+            footer div.socialBar ul li.instagram:hover {
+                background-position: -180px bottom;
+            }
+
+        footer div.socialBar ul li.telegram {
+            background-position: -144px top;
+        }
+
+            footer div.socialBar ul li.telegram:hover {
+                background-position: -144px bottom;
+            }
+
+        footer div.socialBar ul li.lenzor {
+            background-position: -108px top;
+        }
+
+            footer div.socialBar ul li.lenzor:hover {
+                background-position: -108px bottom;
+            }
+
+        footer div.socialBar ul li.cloob {
+            background-position: -72px top;
+        }
+
+            footer div.socialBar ul li.cloob:hover {
+                background-position: -72px bottom;
+            }
+
+        footer div.socialBar ul li.aparat {
+            background-position: -36px top;
+        }
+
+            footer div.socialBar ul li.aparat:hover {
+                background-position: -36px bottom;
+            }
+
+        footer div.socialBar ul li.robot {
+            background-position: 0 top;
+        }
+
+            footer div.socialBar ul li.robot:hover {
+                background-position: 0 bottom;
+            }
+
+footer div.bottomLink {
+    background-color: #f9f9f9;
+}
+
+    footer div.bottomLink div.col1 {
+        padding-top: 20px;
+        padding-bottom: 20px;
+    }
+
+@media screen and (max-width: 991px) {
+    footer div.bottomLink div.col1 {
+        text-align: center;
+    }
+}
+
+footer div.bottomLink div.col1 a {
+    text-decoration: none;
+}
+
+footer div.bottomLink div.col2 {
+    padding-bottom: 20px;
+}
+
+@media screen and (min-width: 992px) {
+    footer div.bottomLink div.col2 {
+        padding-top: 20px;
+        text-align: left;
+    }
+}
+
+@media screen and (max-width: 991px) {
+    footer div.bottomLink div.col2 {
+        text-align: center;
+    }
+}
+
+footer div.bottomLink a {
+    color: #4b4b4b;
+}
+
+footer div.documentCreatorSign {
+    background-color: #f2f2f2;
+}
+
+    footer div.documentCreatorSign a {
+        text-decoration: none;
+        color: #4b4b4b;
+        font-size: 13px;
+        display: block;
+        margin-top: 2px;
+        margin-bottom: 6px;
+    }
