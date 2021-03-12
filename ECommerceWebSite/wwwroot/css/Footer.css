@@ -183,7 +183,7 @@ footer div.socialBar {
         margin: 0 3px;
         width: 36px;
         height: 36px;
-        background: url(https://shop.irancell.ir/static/v2/images/shared/footer/social-icon.png) no-repeat;
+        background: url(~/images/icons/social-icon.png) no-repeat;
         -webkit-transition: background .3s;
         -moz-transition: background .3s;
         -ms-transition: background .3s;

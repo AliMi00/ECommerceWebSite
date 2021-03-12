@@ -50,7 +50,7 @@ namespace ECommerceWebSite
                               {
                                   x.UseHttps();
                               });
-                        });
+                        }); 
                 });
     }
 }
